@@ -1,0 +1,104 @@
+---
+title: "Map_Curaçao"
+author: "Marleen Franz"
+date: "2/20/2025"
+output: html_document
+---
+## load required libraries
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+require("knitr")
+opts_knit$set(root.dir =) #set path to directory here
+library(sf)
+library(ggplot2)
+library(ggrepel)
+library(ggspatial)
+library(viridis)
+library(cowplot)      
+library(grid)
+```
+
+load the required maps (.shp file and metadata need to be in the same folder!) and transform them to the right coordinate reference system, and load .csv file with the longitude and latitude data
+```{r}
+map_world <- read_sf("world_administrative_boundaries.shp")
+map_cura <- read_sf("CUW_adm0.shp") #load the map of Curacao (obtaine as .shp file from internet) https://data.humdata.org/dataset/cod-ab-cuw 20/02/2025
+map_cura <- st_transform(map_cura, crs = 4326)#transform to create the right CRS(coordinate reference system)
+map_centra <- st_transform(map_centra, crs = 4326)
+sampling_sites <- read.csv("Sampling_sites_lat_long.csv") #call dataframe with coordinates #load dataframe that contains sampling sites with the decimal degrees latitude and longituds
+
+```
+
+create the sampling map (Curaçao) and fill in sampling sites, scale bar and north arrow
+```{r}
+map_curacao <- ggplot() +  
+  geom_sf(data = map_cura, fill = "gray60", alpha = 0.7) + 
+  geom_point(data = sampling_sites, aes(x = long, y = lat, color = Status), size = 3) + 
+  scale_color_manual(values = c("Control" = "#22A884FF", "Urban" =  "#440154FF", "Tourist" =  "#f98e09"),
+                     breaks =  c("Control", "Urban", "Tourist")) +
+  geom_text_repel(data = sampling_sites, 
+                  aes(x = long, y = lat, label = Site), 
+                  color = "black", size = 3, max.overlaps = 10) + # Prevent label overlap
+ theme_classic() +  
+ theme(panel.background = element_rect(fill = "lightblue", color = NA),
+       legend.background = element_rect(fill = "transparent"),  
+       legend.key = element_rect(fill = "transparent"),
+       axis.title = element_blank(),
+      ) +
+
+  # Add scale bar and north arrow
+  annotation_scale(location = "bl", width_hint = 0.5) +
+  annotation_north_arrow(location = "bl", which_north = "true", 
+                         pad_x = unit(0.75, "in"), pad_y = unit(0.5, "in"),
+                         style = north_arrow_fancy_orienteering) +
+
+  # Keep full map extent instead of zooming in on points
+  coord_sf(xlim = st_bbox(map_cura)[c("xmin", "xmax")], 
+           ylim = st_bbox(map_cura)[c("ymin", "ymax")])  
+
+```
+
+
+Create the inlet, with the central america map 
+```{r}
+# 1. Create a basic map of Central America and mark Curaçao
+curacao_coords <- data.frame(
+  long = -68.9,
+  lat = 12.1
+)
+
+map_centra_plot <- ggplot() +
+  geom_sf(data = map_world, fill = "gray85", color = "white") +
+  geom_point(data = curacao_coords, aes(x = long, y = lat), color = "black", size = 2) +
+coord_sf(
+  xlim = c(-95, -35),   # Longitude: Mexico to Brazil/Argentina
+  ylim = c(-60, 20)     # Latitude: Southern Chile/Argentina to Central America
+ )+
+  theme_void() +
+  theme(plot.background = element_rect(fill = "white", color = "black")
+  )
+
+# 2. Convert inset map to a grob
+inset_grob <- ggplotGrob(map_centra_plot)
+
+# 3. Add inset to main map (adjust `xmin`, `xmax`, `ymin`, `ymax` as needed)
+map_with_inset <- map_curacao +
+  annotation_custom(grob = inset_grob,
+                    xmin = st_bbox(map_cura)$xmin + 1.5,  # tweak these
+                    xmax = st_bbox(map_cura)$xmin + 0.2,
+                    ymin = st_bbox(map_cura)$ymin + 1.5,
+                    ymax = st_bbox(map_cura)$ymin + 0.2)
+
+
+# 4. Print the final map
+print(map_with_inset)
+
+
+# create the final combined map
+final_map <- ggdraw() +
+  draw_plot(map_curacao) +
+  draw_plot(map_centra_plot, x = 0.65, y = 0.65, width = 0.3, height = 0.3)
+
+print(final_map)
+```
+
+

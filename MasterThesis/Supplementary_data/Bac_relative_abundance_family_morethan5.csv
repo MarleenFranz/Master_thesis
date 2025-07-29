@@ -1,0 +1,546 @@
+"","Family","Label","Year","Site","RelativeAbundance"
+"1","< 5 %","CONTROL1-1DB2020","2020","Directors_Bay",0.099
+"2","< 5 %","CONTROL1-1DB2021","2021","Directors_Bay",0.22
+"3","< 5 %","CONTROL1-1DB2022","2022","Directors_Bay",0.2605
+"4","< 5 %","CONTROL1-1DB2023","2023","Directors_Bay",0.2705
+"5","< 5 %","CONTROL1-2DB2021","2021","Directors_Bay",0.2105
+"6","< 5 %","CONTROL1-2DB2022","2022","Directors_Bay",0.2765
+"7","< 5 %","CONTROL1-2DB2023","2023","Directors_Bay",0.242
+"8","< 5 %","CONTROL1-3DB2020","2020","Directors_Bay",0.1
+"9","< 5 %","CONTROL1-3DB2021","2021","Directors_Bay",0.175
+"10","< 5 %","CONTROL1-3DB2022","2022","Directors_Bay",0.331
+"11","< 5 %","CONTROL1-3DB2023","2023","Directors_Bay",0.271
+"12","< 5 %","CONTROL2-1JK2021","2021","Jan_Kok",0.2955
+"13","< 5 %","CONTROL2-1PJ2020","2020","Playa_Jeremy",0.2675
+"14","< 5 %","CONTROL2-1PJ2022","2022","Playa_Jeremy",0.29025
+"15","< 5 %","CONTROL2-1PJ2023","2023","Playa_Jeremy",0.2235
+"16","< 5 %","CONTROL2-2JK2021","2021","Jan_Kok",0.297
+"17","< 5 %","CONTROL2-2PJ2022","2022","Playa_Jeremy",0.3515
+"18","< 5 %","CONTROL2-2PJ2023","2023","Playa_Jeremy",0.25325
+"19","< 5 %","CONTROL2-3JK2021","2021","Jan_Kok",0.3215
+"20","< 5 %","CONTROL2-3PJ2020","2020","Playa_Jeremy",0.1635
+"21","< 5 %","CONTROL2-3PJ2022","2022","Playa_Jeremy",0.3
+"22","< 5 %","CONTROL2-3PJ2023","2023","Playa_Jeremy",0.26475
+"23","< 5 %","CONTROL3-1PJ2021","2021","Playa_Jeremy",0.227
+"24","< 5 %","CONTROL3-2PJ2021","2021","Playa_Jeremy",0.267
+"25","< 5 %","CONTROL3-3PJ2021","2021","Playa_Jeremy",0.243
+"26","< 5 %","TOURIST1-1GK2020","2020","Grote_Knip",0.1585
+"27","< 5 %","TOURIST1-1GK2022","2022","Grote_Knip",0.38025
+"28","< 5 %","TOURIST1-1GK2023","2023","Grote_Knip",0.2015
+"29","< 5 %","TOURIST1-1MB2021","2021","Mambo_Beach",0.094
+"30","< 5 %","TOURIST1-2GK2022","2022","Grote_Knip",0.3295
+"31","< 5 %","TOURIST1-2GK2023","2023","Grote_Knip",0.23825
+"32","< 5 %","TOURIST1-2MB2021","2021","Mambo_Beach",0.1175
+"33","< 5 %","TOURIST1-3GK2020","2020","Grote_Knip",0.1385
+"34","< 5 %","TOURIST1-3GK2022","2022","Grote_Knip",0.37675
+"35","< 5 %","TOURIST1-3GK2023","2023","Grote_Knip",0.256
+"36","< 5 %","TOURIST1-3MB2021","2021","Mambo_Beach",0.118
+"37","< 5 %","TOURIST2-1MB2020","2020","Mambo_Beach",0.208
+"38","< 5 %","TOURIST2-1MB2022","2022","Mambo_Beach",0.2915
+"39","< 5 %","TOURIST2-1MB2023","2023","Mambo_Beach",0.3105
+"40","< 5 %","TOURIST2-1PM2021","2021","Porto_Marie",0.2475
+"41","< 5 %","TOURIST2-2MB2020","2020","Mambo_Beach",0.2105
+"42","< 5 %","TOURIST2-2MB2022","2022","Mambo_Beach",0.267
+"43","< 5 %","TOURIST2-2MB2023","2023","Mambo_Beach",0.25125
+"44","< 5 %","TOURIST2-2PM2021","2021","Porto_Marie",0.279
+"45","< 5 %","TOURIST2-3MB2020","2020","Mambo_Beach",0.2205
+"46","< 5 %","TOURIST2-3MB2022","2022","Mambo_Beach",0.15625
+"47","< 5 %","TOURIST2-3MB2023","2023","Mambo_Beach",0.198
+"48","< 5 %","TOURIST2-3PM2021","2021","Porto_Marie",0.3985
+"49","< 5 %","TOURIST3-1GK2021","2021","Grote_Knip",0.236
+"50","< 5 %","TOURIST3-1PM2020","2020","Porto_Marie",0.2605
+"51","< 5 %","TOURIST3-1PM2022","2022","Porto_Marie",0.390750000000001
+"52","< 5 %","TOURIST3-1PM2023","2023","Porto_Marie",0.24425
+"53","< 5 %","TOURIST3-2GK2021","2021","Grote_Knip",0.229
+"54","< 5 %","TOURIST3-2PM2022","2022","Porto_Marie",0.39475
+"55","< 5 %","TOURIST3-2PM2023","2023","Porto_Marie",0.15475
+"56","< 5 %","TOURIST3-3GK2021","2021","Grote_Knip",0.2905
+"57","< 5 %","TOURIST3-3PM2020","2020","Porto_Marie",0.213
+"58","< 5 %","TOURIST3-3PM2022","2022","Porto_Marie",0.30675
+"59","< 5 %","TOURIST3-3PM2023","2023","Porto_Marie",0.20725
+"60","< 5 %","URBAN1-1HB2021","2021","Holiday_Beach",0.272
+"61","< 5 %","URBAN1-2HB2021","2021","Holiday_Beach",0.266
+"62","< 5 %","URBAN1-3HB2021","2021","Holiday_Beach",0.3785
+"63","< 5 %","URBAN2-1CE2020","2020","Coral_Estate",0.268
+"64","< 5 %","URBAN2-1CE2021","2021","Coral_Estate",0.287
+"65","< 5 %","URBAN2-1CE2022","2022","Coral_Estate",0.32125
+"66","< 5 %","URBAN2-1CE2023","2023","Coral_Estate",0.25975
+"67","< 5 %","URBAN2-2CE2021","2021","Coral_Estate",0.417
+"68","< 5 %","URBAN2-2CE2022","2022","Coral_Estate",0.30975
+"69","< 5 %","URBAN2-2CE2023","2023","Coral_Estate",0.2755
+"70","< 5 %","URBAN2-3CE2020","2020","Coral_Estate",0.2895
+"71","< 5 %","URBAN2-3CE2021","2021","Coral_Estate",0.349
+"72","< 5 %","URBAN2-3CE2022","2022","Coral_Estate",0.314
+"73","< 5 %","URBAN2-3CE2023","2023","Coral_Estate",0.267750000000001
+"74","< 5 %","URBAN3-1CA2020","2020","Cas_Abou",0.178
+"75","< 5 %","URBAN3-1CA2021","2021","Cas_Abou",0.2505
+"76","< 5 %","URBAN3-1CA2022","2022","Cas_Abou",0.331
+"77","< 5 %","URBAN3-1CA2023","2023","Cas_Abou",0.16075
+"78","< 5 %","URBAN3-1HB2020","2020","Holiday_Beach",0.165
+"79","< 5 %","URBAN3-1HB2022","2022","Holiday_Beach",0.274
+"80","< 5 %","URBAN3-1HB2023","2023","Holiday_Beach",0.493500000000002
+"81","< 5 %","URBAN3-2CA2021","2021","Cas_Abou",0.257
+"82","< 5 %","URBAN3-2CA2022","2022","Cas_Abou",0.34225
+"83","< 5 %","URBAN3-2CA2023","2023","Cas_Abou",0.29225
+"84","< 5 %","URBAN3-2HB2020","2020","Holiday_Beach",0.169
+"85","< 5 %","URBAN3-2HB2022","2022","Holiday_Beach",0.2895
+"86","< 5 %","URBAN3-2HB2023","2023","Holiday_Beach",0.339750000000001
+"87","< 5 %","URBAN3-3CA2020","2020","Cas_Abou",0.229
+"88","< 5 %","URBAN3-3CA2021","2021","Cas_Abou",0.282
+"89","< 5 %","URBAN3-3CA2022","2022","Cas_Abou",0.269
+"90","< 5 %","URBAN3-3CA2023","2023","Cas_Abou",0.21775
+"91","< 5 %","URBAN3-3HB2020","2020","Holiday_Beach",0.2155
+"92","< 5 %","URBAN3-3HB2022","2022","Holiday_Beach",0.36525
+"93","< 5 %","URBAN3-3HB2023","2023","Holiday_Beach",0.344750000000001
+"94","AEGEAN-169_marine_group","CONTROL3-1PJ2021","2021","Playa_Jeremy",0.0525
+"95","Actinomarinaceae","CONTROL1-1DB2021","2021","Directors_Bay",0.1375
+"96","Actinomarinaceae","CONTROL1-1DB2023","2023","Directors_Bay",0.14225
+"97","Actinomarinaceae","CONTROL1-2DB2021","2021","Directors_Bay",0.1555
+"98","Actinomarinaceae","CONTROL1-2DB2023","2023","Directors_Bay",0.17975
+"99","Actinomarinaceae","CONTROL1-3DB2021","2021","Directors_Bay",0.163
+"100","Actinomarinaceae","CONTROL1-3DB2023","2023","Directors_Bay",0.13975
+"101","Actinomarinaceae","CONTROL2-1JK2021","2021","Jan_Kok",0.1625
+"102","Actinomarinaceae","CONTROL2-1PJ2020","2020","Playa_Jeremy",0.0765
+"103","Actinomarinaceae","CONTROL2-1PJ2023","2023","Playa_Jeremy",0.17975
+"104","Actinomarinaceae","CONTROL2-2JK2021","2021","Jan_Kok",0.113
+"105","Actinomarinaceae","CONTROL2-2PJ2022","2022","Playa_Jeremy",0.0523333333333333
+"106","Actinomarinaceae","CONTROL2-2PJ2023","2023","Playa_Jeremy",0.16975
+"107","Actinomarinaceae","CONTROL2-3JK2021","2021","Jan_Kok",0.2095
+"108","Actinomarinaceae","CONTROL2-3PJ2020","2020","Playa_Jeremy",0.0940000000000001
+"109","Actinomarinaceae","CONTROL2-3PJ2022","2022","Playa_Jeremy",0.0670000000000001
+"110","Actinomarinaceae","CONTROL2-3PJ2023","2023","Playa_Jeremy",0.0960000000000001
+"111","Actinomarinaceae","CONTROL3-1PJ2021","2021","Playa_Jeremy",0.175
+"112","Actinomarinaceae","CONTROL3-2PJ2021","2021","Playa_Jeremy",0.1135
+"113","Actinomarinaceae","CONTROL3-3PJ2021","2021","Playa_Jeremy",0.1575
+"114","Actinomarinaceae","TOURIST1-1GK2020","2020","Grote_Knip",0.0805000000000001
+"115","Actinomarinaceae","TOURIST1-1GK2023","2023","Grote_Knip",0.1045
+"116","Actinomarinaceae","TOURIST1-2GK2023","2023","Grote_Knip",0.1575
+"117","Actinomarinaceae","TOURIST1-3GK2020","2020","Grote_Knip",0.0830000000000001
+"118","Actinomarinaceae","TOURIST1-3GK2023","2023","Grote_Knip",0.094
+"119","Actinomarinaceae","TOURIST2-1PM2021","2021","Porto_Marie",0.1915
+"120","Actinomarinaceae","TOURIST2-2PM2021","2021","Porto_Marie",0.2015
+"121","Actinomarinaceae","TOURIST2-3PM2021","2021","Porto_Marie",0.146
+"122","Actinomarinaceae","TOURIST3-1GK2021","2021","Grote_Knip",0.1885
+"123","Actinomarinaceae","TOURIST3-1PM2023","2023","Porto_Marie",0.0782500000000001
+"124","Actinomarinaceae","TOURIST3-2GK2021","2021","Grote_Knip",0.1405
+"125","Actinomarinaceae","TOURIST3-2PM2023","2023","Porto_Marie",0.1065
+"126","Actinomarinaceae","TOURIST3-3GK2021","2021","Grote_Knip",0.178
+"127","Actinomarinaceae","TOURIST3-3PM2020","2020","Porto_Marie",0.0820000000000001
+"128","Actinomarinaceae","TOURIST3-3PM2022","2022","Porto_Marie",0.0505
+"129","Actinomarinaceae","TOURIST3-3PM2023","2023","Porto_Marie",0.0775
+"130","Actinomarinaceae","URBAN1-1HB2021","2021","Holiday_Beach",0.0955000000000001
+"131","Actinomarinaceae","URBAN1-2HB2021","2021","Holiday_Beach",0.1015
+"132","Actinomarinaceae","URBAN2-1CE2021","2021","Coral_Estate",0.156
+"133","Actinomarinaceae","URBAN2-1CE2023","2023","Coral_Estate",0.0692500000000001
+"134","Actinomarinaceae","URBAN2-2CE2021","2021","Coral_Estate",0.1495
+"135","Actinomarinaceae","URBAN2-2CE2023","2023","Coral_Estate",0.1445
+"136","Actinomarinaceae","URBAN2-3CE2021","2021","Coral_Estate",0.154
+"137","Actinomarinaceae","URBAN2-3CE2023","2023","Coral_Estate",0.0922500000000001
+"138","Actinomarinaceae","URBAN3-1CA2020","2020","Cas_Abou",0.1065
+"139","Actinomarinaceae","URBAN3-1CA2021","2021","Cas_Abou",0.1805
+"140","Actinomarinaceae","URBAN3-1CA2022","2022","Cas_Abou",0.0707500000000001
+"141","Actinomarinaceae","URBAN3-1CA2023","2023","Cas_Abou",0.0920000000000001
+"142","Actinomarinaceae","URBAN3-2CA2021","2021","Cas_Abou",0.1745
+"143","Actinomarinaceae","URBAN3-2CA2022","2022","Cas_Abou",0.05825
+"144","Actinomarinaceae","URBAN3-2CA2023","2023","Cas_Abou",0.16525
+"145","Actinomarinaceae","URBAN3-2HB2023","2023","Holiday_Beach",0.18825
+"146","Actinomarinaceae","URBAN3-3CA2020","2020","Cas_Abou",0.0910000000000001
+"147","Actinomarinaceae","URBAN3-3CA2021","2021","Cas_Abou",0.2025
+"148","Actinomarinaceae","URBAN3-3CA2022","2022","Cas_Abou",0.0645000000000001
+"149","Actinomarinaceae","URBAN3-3CA2023","2023","Cas_Abou",0.066
+"150","Actinomarinaceae","URBAN3-3HB2023","2023","Holiday_Beach",0.106
+"151","Alteromonadaceae","CONTROL1-1DB2020","2020","Directors_Bay",0.2785
+"152","Alteromonadaceae","CONTROL1-1DB2023","2023","Directors_Bay",0.0772500000000001
+"153","Alteromonadaceae","CONTROL1-3DB2020","2020","Directors_Bay",0.377
+"154","Alteromonadaceae","CONTROL1-3DB2023","2023","Directors_Bay",0.16575
+"155","Alteromonadaceae","CONTROL2-1PJ2020","2020","Playa_Jeremy",0.6025
+"156","Alteromonadaceae","CONTROL2-1PJ2023","2023","Playa_Jeremy",0.19475
+"157","Alteromonadaceae","CONTROL2-2PJ2023","2023","Playa_Jeremy",0.2635
+"158","Alteromonadaceae","CONTROL2-3PJ2020","2020","Playa_Jeremy",0.4725
+"159","Alteromonadaceae","CONTROL2-3PJ2023","2023","Playa_Jeremy",0.12725
+"160","Alteromonadaceae","TOURIST1-1GK2020","2020","Grote_Knip",0.3275
+"161","Alteromonadaceae","TOURIST1-1GK2023","2023","Grote_Knip",0.2915
+"162","Alteromonadaceae","TOURIST1-2GK2023","2023","Grote_Knip",0.178
+"163","Alteromonadaceae","TOURIST1-3GK2020","2020","Grote_Knip",0.5005
+"164","Alteromonadaceae","TOURIST1-3GK2023","2023","Grote_Knip",0.52125
+"165","Alteromonadaceae","TOURIST2-1MB2020","2020","Mambo_Beach",0.118
+"166","Alteromonadaceae","TOURIST2-1MB2023","2023","Mambo_Beach",0.0647500000000001
+"167","Alteromonadaceae","TOURIST2-3MB2020","2020","Mambo_Beach",0.208
+"168","Alteromonadaceae","TOURIST2-3MB2022","2022","Mambo_Beach",0.05075
+"169","Alteromonadaceae","TOURIST2-3MB2023","2023","Mambo_Beach",0.1355
+"170","Alteromonadaceae","TOURIST3-1PM2020","2020","Porto_Marie",0.298
+"171","Alteromonadaceae","TOURIST3-1PM2022","2022","Porto_Marie",0.0722500000000001
+"172","Alteromonadaceae","TOURIST3-1PM2023","2023","Porto_Marie",0.531750000000001
+"173","Alteromonadaceae","TOURIST3-2PM2023","2023","Porto_Marie",0.40475
+"174","Alteromonadaceae","TOURIST3-3PM2020","2020","Porto_Marie",0.2225
+"175","Alteromonadaceae","TOURIST3-3PM2023","2023","Porto_Marie",0.20075
+"176","Alteromonadaceae","URBAN2-1CE2020","2020","Coral_Estate",0.3915
+"177","Alteromonadaceae","URBAN2-1CE2023","2023","Coral_Estate",0.589500000000001
+"178","Alteromonadaceae","URBAN2-2CE2022","2022","Coral_Estate",0.10025
+"179","Alteromonadaceae","URBAN2-2CE2023","2023","Coral_Estate",0.2055
+"180","Alteromonadaceae","URBAN2-3CE2020","2020","Coral_Estate",0.4155
+"181","Alteromonadaceae","URBAN2-3CE2023","2023","Coral_Estate",0.19275
+"182","Alteromonadaceae","URBAN3-1CA2020","2020","Cas_Abou",0.25
+"183","Alteromonadaceae","URBAN3-1CA2023","2023","Cas_Abou",0.31025
+"184","Alteromonadaceae","URBAN3-1HB2020","2020","Holiday_Beach",0.073
+"185","Alteromonadaceae","URBAN3-2HB2020","2020","Holiday_Beach",0.1375
+"186","Alteromonadaceae","URBAN3-3CA2020","2020","Cas_Abou",0.3715
+"187","Alteromonadaceae","URBAN3-3CA2023","2023","Cas_Abou",0.2225
+"188","Alteromonadaceae","URBAN3-3HB2020","2020","Holiday_Beach",0.1195
+"189","Alteromonadaceae","URBAN3-3HB2023","2023","Holiday_Beach",0.18475
+"190","Clade_I","CONTROL1-1DB2022","2022","Directors_Bay",0.0835000000000001
+"191","Clade_I","CONTROL1-2DB2022","2022","Directors_Bay",0.0730000000000001
+"192","Clade_I","CONTROL1-2DB2023","2023","Directors_Bay",0.05525
+"193","Clade_I","CONTROL1-3DB2022","2022","Directors_Bay",0.0882500000000001
+"194","Clade_I","CONTROL2-1PJ2022","2022","Playa_Jeremy",0.0885000000000001
+"195","Clade_I","CONTROL2-2PJ2022","2022","Playa_Jeremy",0.108
+"196","Clade_I","CONTROL2-3PJ2022","2022","Playa_Jeremy",0.1175
+"197","Clade_I","CONTROL3-1PJ2021","2021","Playa_Jeremy",0.064
+"198","Clade_I","CONTROL3-2PJ2021","2021","Playa_Jeremy",0.0855000000000001
+"199","Clade_I","CONTROL3-3PJ2021","2021","Playa_Jeremy",0.0685000000000001
+"200","Clade_I","TOURIST1-1GK2022","2022","Grote_Knip",0.0840000000000001
+"201","Clade_I","TOURIST1-2GK2022","2022","Grote_Knip",0.0765
+"202","Clade_I","TOURIST1-3GK2022","2022","Grote_Knip",0.10425
+"203","Clade_I","TOURIST3-1GK2021","2021","Grote_Knip",0.0555
+"204","Clade_I","TOURIST3-1PM2022","2022","Porto_Marie",0.0655000000000001
+"205","Clade_I","TOURIST3-2GK2021","2021","Grote_Knip",0.0650000000000001
+"206","Clade_I","TOURIST3-2PM2022","2022","Porto_Marie",0.09325
+"207","Clade_I","TOURIST3-3PM2022","2022","Porto_Marie",0.10975
+"208","Clade_I","URBAN1-1HB2021","2021","Holiday_Beach",0.0865000000000001
+"209","Clade_I","URBAN1-2HB2021","2021","Holiday_Beach",0.0805000000000001
+"210","Clade_I","URBAN2-1CE2020","2020","Coral_Estate",0.0595000000000001
+"211","Clade_I","URBAN2-1CE2022","2022","Coral_Estate",0.0875000000000001
+"212","Clade_I","URBAN2-2CE2022","2022","Coral_Estate",0.05425
+"213","Clade_I","URBAN2-3CE2022","2022","Coral_Estate",0.0947500000000001
+"214","Clade_I","URBAN3-1CA2021","2021","Cas_Abou",0.069
+"215","Clade_I","URBAN3-1CA2022","2022","Cas_Abou",0.11075
+"216","Clade_I","URBAN3-1HB2022","2022","Holiday_Beach",0.0677500000000001
+"217","Clade_I","URBAN3-2CA2021","2021","Cas_Abou",0.0575000000000001
+"218","Clade_I","URBAN3-2CA2022","2022","Cas_Abou",0.12
+"219","Clade_I","URBAN3-2HB2022","2022","Holiday_Beach",0.0722500000000001
+"220","Clade_I","URBAN3-3CA2022","2022","Cas_Abou",0.1015
+"221","Cryomorphaceae","TOURIST1-1MB2021","2021","Mambo_Beach",0.2675
+"222","Cryomorphaceae","TOURIST1-2MB2021","2021","Mambo_Beach",0.2555
+"223","Cryomorphaceae","TOURIST1-3MB2021","2021","Mambo_Beach",0.323
+"224","Cryomorphaceae","TOURIST2-1MB2023","2023","Mambo_Beach",0.1635
+"225","Cryomorphaceae","TOURIST2-2MB2023","2023","Mambo_Beach",0.1315
+"226","Cryomorphaceae","TOURIST2-3MB2022","2022","Mambo_Beach",0.09525
+"227","Cryomorphaceae","TOURIST2-3MB2023","2023","Mambo_Beach",0.13675
+"228","Cryomorphaceae","URBAN1-3HB2021","2021","Holiday_Beach",0.087
+"229","Cryomorphaceae","URBAN3-1HB2022","2022","Holiday_Beach",0.0702500000000001
+"230","Cryomorphaceae","URBAN3-3HB2022","2022","Holiday_Beach",0.0680000000000001
+"231","Cyanobiaceae","CONTROL1-1DB2021","2021","Directors_Bay",0.3805
+"232","Cyanobiaceae","CONTROL1-1DB2022","2022","Directors_Bay",0.442
+"233","Cyanobiaceae","CONTROL1-1DB2023","2023","Directors_Bay",0.157
+"234","Cyanobiaceae","CONTROL1-2DB2021","2021","Directors_Bay",0.3805
+"235","Cyanobiaceae","CONTROL1-2DB2022","2022","Directors_Bay",0.4605
+"236","Cyanobiaceae","CONTROL1-2DB2023","2023","Directors_Bay",0.2245
+"237","Cyanobiaceae","CONTROL1-3DB2021","2021","Directors_Bay",0.382
+"238","Cyanobiaceae","CONTROL1-3DB2022","2022","Directors_Bay",0.40775
+"239","Cyanobiaceae","CONTROL1-3DB2023","2023","Directors_Bay",0.15825
+"240","Cyanobiaceae","CONTROL2-1JK2021","2021","Jan_Kok",0.253
+"241","Cyanobiaceae","CONTROL2-1PJ2022","2022","Playa_Jeremy",0.361
+"242","Cyanobiaceae","CONTROL2-1PJ2023","2023","Playa_Jeremy",0.1215
+"243","Cyanobiaceae","CONTROL2-2JK2021","2021","Jan_Kok",0.320000000000001
+"244","Cyanobiaceae","CONTROL2-2PJ2022","2022","Playa_Jeremy",0.325666666666667
+"245","Cyanobiaceae","CONTROL2-2PJ2023","2023","Playa_Jeremy",0.14
+"246","Cyanobiaceae","CONTROL2-3JK2021","2021","Jan_Kok",0.2315
+"247","Cyanobiaceae","CONTROL2-3PJ2020","2020","Playa_Jeremy",0.0695000000000001
+"248","Cyanobiaceae","CONTROL2-3PJ2022","2022","Playa_Jeremy",0.3035
+"249","Cyanobiaceae","CONTROL2-3PJ2023","2023","Playa_Jeremy",0.1575
+"250","Cyanobiaceae","CONTROL3-1PJ2021","2021","Playa_Jeremy",0.28
+"251","Cyanobiaceae","CONTROL3-2PJ2021","2021","Playa_Jeremy",0.3765
+"252","Cyanobiaceae","CONTROL3-3PJ2021","2021","Playa_Jeremy",0.3035
+"253","Cyanobiaceae","TOURIST1-1GK2020","2020","Grote_Knip",0.0640000000000001
+"254","Cyanobiaceae","TOURIST1-1GK2022","2022","Grote_Knip",0.4135
+"255","Cyanobiaceae","TOURIST1-1GK2023","2023","Grote_Knip",0.0942500000000001
+"256","Cyanobiaceae","TOURIST1-1MB2021","2021","Mambo_Beach",0.058
+"257","Cyanobiaceae","TOURIST1-2GK2022","2022","Grote_Knip",0.344
+"258","Cyanobiaceae","TOURIST1-2GK2023","2023","Grote_Knip",0.1365
+"259","Cyanobiaceae","TOURIST1-2MB2021","2021","Mambo_Beach",0.055
+"260","Cyanobiaceae","TOURIST1-3GK2020","2020","Grote_Knip",0.0665000000000001
+"261","Cyanobiaceae","TOURIST1-3GK2022","2022","Grote_Knip",0.42775
+"262","Cyanobiaceae","TOURIST1-3GK2023","2023","Grote_Knip",0.0695
+"263","Cyanobiaceae","TOURIST1-3MB2021","2021","Mambo_Beach",0.0535
+"264","Cyanobiaceae","TOURIST2-1MB2022","2022","Mambo_Beach",0.0945
+"265","Cyanobiaceae","TOURIST2-1PM2021","2021","Porto_Marie",0.3185
+"266","Cyanobiaceae","TOURIST2-2MB2022","2022","Mambo_Beach",0.1295
+"267","Cyanobiaceae","TOURIST2-2MB2023","2023","Mambo_Beach",0.0777500000000001
+"268","Cyanobiaceae","TOURIST2-2PM2021","2021","Porto_Marie",0.249
+"269","Cyanobiaceae","TOURIST2-3MB2022","2022","Mambo_Beach",0.05475
+"270","Cyanobiaceae","TOURIST2-3PM2021","2021","Porto_Marie",0.265
+"271","Cyanobiaceae","TOURIST3-1GK2021","2021","Grote_Knip",0.352
+"272","Cyanobiaceae","TOURIST3-1PM2020","2020","Porto_Marie",0.0990000000000001
+"273","Cyanobiaceae","TOURIST3-1PM2022","2022","Porto_Marie",0.38925
+"274","Cyanobiaceae","TOURIST3-2GK2021","2021","Grote_Knip",0.4125
+"275","Cyanobiaceae","TOURIST3-2PM2022","2022","Porto_Marie",0.40625
+"276","Cyanobiaceae","TOURIST3-2PM2023","2023","Porto_Marie",0.0635
+"277","Cyanobiaceae","TOURIST3-3GK2021","2021","Grote_Knip",0.2405
+"278","Cyanobiaceae","TOURIST3-3PM2020","2020","Porto_Marie",0.0595
+"279","Cyanobiaceae","TOURIST3-3PM2022","2022","Porto_Marie",0.37675
+"280","Cyanobiaceae","TOURIST3-3PM2023","2023","Porto_Marie",0.0827500000000001
+"281","Cyanobiaceae","URBAN1-1HB2021","2021","Holiday_Beach",0.406500000000001
+"282","Cyanobiaceae","URBAN1-2HB2021","2021","Holiday_Beach",0.4035
+"283","Cyanobiaceae","URBAN2-1CE2020","2020","Coral_Estate",0.1175
+"284","Cyanobiaceae","URBAN2-1CE2021","2021","Coral_Estate",0.305
+"285","Cyanobiaceae","URBAN2-1CE2022","2022","Coral_Estate",0.4485
+"286","Cyanobiaceae","URBAN2-2CE2021","2021","Coral_Estate",0.1825
+"287","Cyanobiaceae","URBAN2-2CE2022","2022","Coral_Estate",0.3965
+"288","Cyanobiaceae","URBAN2-2CE2023","2023","Coral_Estate",0.13375
+"289","Cyanobiaceae","URBAN2-3CE2020","2020","Coral_Estate",0.0555
+"290","Cyanobiaceae","URBAN2-3CE2021","2021","Coral_Estate",0.2385
+"291","Cyanobiaceae","URBAN2-3CE2022","2022","Coral_Estate",0.4305
+"292","Cyanobiaceae","URBAN2-3CE2023","2023","Coral_Estate",0.1445
+"293","Cyanobiaceae","URBAN3-1CA2020","2020","Cas_Abou",0.093
+"294","Cyanobiaceae","URBAN3-1CA2021","2021","Cas_Abou",0.3175
+"295","Cyanobiaceae","URBAN3-1CA2022","2022","Cas_Abou",0.38725
+"296","Cyanobiaceae","URBAN3-1CA2023","2023","Cas_Abou",0.106
+"297","Cyanobiaceae","URBAN3-1HB2022","2022","Holiday_Beach",0.2465
+"298","Cyanobiaceae","URBAN3-1HB2023","2023","Holiday_Beach",0.18225
+"299","Cyanobiaceae","URBAN3-2CA2021","2021","Cas_Abou",0.2615
+"300","Cyanobiaceae","URBAN3-2CA2022","2022","Cas_Abou",0.36725
+"301","Cyanobiaceae","URBAN3-2CA2023","2023","Cas_Abou",0.20925
+"302","Cyanobiaceae","URBAN3-2HB2020","2020","Holiday_Beach",0.0765
+"303","Cyanobiaceae","URBAN3-2HB2022","2022","Holiday_Beach",0.315
+"304","Cyanobiaceae","URBAN3-2HB2023","2023","Holiday_Beach",0.1625
+"305","Cyanobiaceae","URBAN3-3CA2020","2020","Cas_Abou",0.0805000000000001
+"306","Cyanobiaceae","URBAN3-3CA2021","2021","Cas_Abou",0.266
+"307","Cyanobiaceae","URBAN3-3CA2022","2022","Cas_Abou",0.35975
+"308","Cyanobiaceae","URBAN3-3CA2023","2023","Cas_Abou",0.18925
+"309","Cyanobiaceae","URBAN3-3HB2022","2022","Holiday_Beach",0.2335
+"310","Cyanobiaceae","URBAN3-3HB2023","2023","Holiday_Beach",0.17725
+"311","Flavobacteriaceae","CONTROL1-1DB2021","2021","Directors_Bay",0.1385
+"312","Flavobacteriaceae","CONTROL1-1DB2022","2022","Directors_Bay",0.0560000000000001
+"313","Flavobacteriaceae","CONTROL1-1DB2023","2023","Directors_Bay",0.14375
+"314","Flavobacteriaceae","CONTROL1-2DB2021","2021","Directors_Bay",0.134
+"315","Flavobacteriaceae","CONTROL1-2DB2022","2022","Directors_Bay",0.0695000000000001
+"316","Flavobacteriaceae","CONTROL1-2DB2023","2023","Directors_Bay",0.0952500000000001
+"317","Flavobacteriaceae","CONTROL1-3DB2021","2021","Directors_Bay",0.1515
+"318","Flavobacteriaceae","CONTROL1-3DB2022","2022","Directors_Bay",0.0580000000000001
+"319","Flavobacteriaceae","CONTROL1-3DB2023","2023","Directors_Bay",0.0732500000000001
+"320","Flavobacteriaceae","CONTROL2-1JK2021","2021","Jan_Kok",0.1605
+"321","Flavobacteriaceae","CONTROL2-1PJ2020","2020","Playa_Jeremy",0.0535
+"322","Flavobacteriaceae","CONTROL2-1PJ2022","2022","Playa_Jeremy",0.06075
+"323","Flavobacteriaceae","CONTROL2-1PJ2023","2023","Playa_Jeremy",0.0997500000000002
+"324","Flavobacteriaceae","CONTROL2-2JK2021","2021","Jan_Kok",0.0990000000000002
+"325","Flavobacteriaceae","CONTROL2-2PJ2022","2022","Playa_Jeremy",0.0508333333333333
+"326","Flavobacteriaceae","CONTROL2-2PJ2023","2023","Playa_Jeremy",0.0795000000000001
+"327","Flavobacteriaceae","CONTROL2-3JK2021","2021","Jan_Kok",0.165
+"328","Flavobacteriaceae","CONTROL2-3PJ2020","2020","Playa_Jeremy",0.0870000000000001
+"329","Flavobacteriaceae","CONTROL2-3PJ2022","2022","Playa_Jeremy",0.0635000000000001
+"330","Flavobacteriaceae","CONTROL2-3PJ2023","2023","Playa_Jeremy",0.112
+"331","Flavobacteriaceae","CONTROL3-1PJ2021","2021","Playa_Jeremy",0.1195
+"332","Flavobacteriaceae","CONTROL3-2PJ2021","2021","Playa_Jeremy",0.0850000000000001
+"333","Flavobacteriaceae","CONTROL3-3PJ2021","2021","Playa_Jeremy",0.0940000000000001
+"334","Flavobacteriaceae","TOURIST1-1GK2020","2020","Grote_Knip",0.0605000000000001
+"335","Flavobacteriaceae","TOURIST1-1GK2023","2023","Grote_Knip",0.1105
+"336","Flavobacteriaceae","TOURIST1-1MB2021","2021","Mambo_Beach",0.078
+"337","Flavobacteriaceae","TOURIST1-2GK2022","2022","Grote_Knip",0.0605
+"338","Flavobacteriaceae","TOURIST1-2GK2023","2023","Grote_Knip",0.0820000000000001
+"339","Flavobacteriaceae","TOURIST1-2MB2021","2021","Mambo_Beach",0.072
+"340","Flavobacteriaceae","TOURIST1-3GK2020","2020","Grote_Knip",0.0620000000000001
+"341","Flavobacteriaceae","TOURIST1-3MB2021","2021","Mambo_Beach",0.127
+"342","Flavobacteriaceae","TOURIST2-1MB2022","2022","Mambo_Beach",0.111
+"343","Flavobacteriaceae","TOURIST2-1PM2021","2021","Porto_Marie",0.1125
+"344","Flavobacteriaceae","TOURIST2-2MB2022","2022","Mambo_Beach",0.1175
+"345","Flavobacteriaceae","TOURIST2-2PM2021","2021","Porto_Marie",0.1335
+"346","Flavobacteriaceae","TOURIST2-3MB2022","2022","Mambo_Beach",0.1665
+"347","Flavobacteriaceae","TOURIST2-3PM2021","2021","Porto_Marie",0.105
+"348","Flavobacteriaceae","TOURIST3-1GK2021","2021","Grote_Knip",0.1045
+"349","Flavobacteriaceae","TOURIST3-1PM2020","2020","Porto_Marie",0.1105
+"350","Flavobacteriaceae","TOURIST3-1PM2023","2023","Porto_Marie",0.0890000000000001
+"351","Flavobacteriaceae","TOURIST3-2GK2021","2021","Grote_Knip",0.0880000000000001
+"352","Flavobacteriaceae","TOURIST3-2PM2023","2023","Porto_Marie",0.072
+"353","Flavobacteriaceae","TOURIST3-3GK2021","2021","Grote_Knip",0.1485
+"354","Flavobacteriaceae","TOURIST3-3PM2020","2020","Porto_Marie",0.1745
+"355","Flavobacteriaceae","TOURIST3-3PM2022","2022","Porto_Marie",0.0532500000000001
+"356","Flavobacteriaceae","TOURIST3-3PM2023","2023","Porto_Marie",0.0902500000000001
+"357","Flavobacteriaceae","URBAN1-1HB2021","2021","Holiday_Beach",0.0710000000000001
+"358","Flavobacteriaceae","URBAN1-2HB2021","2021","Holiday_Beach",0.0785000000000001
+"359","Flavobacteriaceae","URBAN1-3HB2021","2021","Holiday_Beach",0.1145
+"360","Flavobacteriaceae","URBAN2-1CE2021","2021","Coral_Estate",0.1155
+"361","Flavobacteriaceae","URBAN2-1CE2022","2022","Coral_Estate",0.0502500000000001
+"362","Flavobacteriaceae","URBAN2-1CE2023","2023","Coral_Estate",0.0815000000000001
+"363","Flavobacteriaceae","URBAN2-2CE2021","2021","Coral_Estate",0.1555
+"364","Flavobacteriaceae","URBAN2-2CE2022","2022","Coral_Estate",0.0595000000000001
+"365","Flavobacteriaceae","URBAN2-2CE2023","2023","Coral_Estate",0.0705
+"366","Flavobacteriaceae","URBAN2-3CE2020","2020","Coral_Estate",0.1575
+"367","Flavobacteriaceae","URBAN2-3CE2021","2021","Coral_Estate",0.1645
+"368","Flavobacteriaceae","URBAN2-3CE2022","2022","Coral_Estate",0.054
+"369","Flavobacteriaceae","URBAN2-3CE2023","2023","Coral_Estate",0.0917500000000002
+"370","Flavobacteriaceae","URBAN3-1CA2020","2020","Cas_Abou",0.057
+"371","Flavobacteriaceae","URBAN3-1CA2021","2021","Cas_Abou",0.1095
+"372","Flavobacteriaceae","URBAN3-1CA2023","2023","Cas_Abou",0.0787500000000001
+"373","Flavobacteriaceae","URBAN3-1HB2022","2022","Holiday_Beach",0.1065
+"374","Flavobacteriaceae","URBAN3-1HB2023","2023","Holiday_Beach",0.1225
+"375","Flavobacteriaceae","URBAN3-2CA2021","2021","Cas_Abou",0.117
+"376","Flavobacteriaceae","URBAN3-2CA2023","2023","Cas_Abou",0.1
+"377","Flavobacteriaceae","URBAN3-2HB2022","2022","Holiday_Beach",0.12575
+"378","Flavobacteriaceae","URBAN3-2HB2023","2023","Holiday_Beach",0.10475
+"379","Flavobacteriaceae","URBAN3-3CA2020","2020","Cas_Abou",0.0690000000000001
+"380","Flavobacteriaceae","URBAN3-3CA2021","2021","Cas_Abou",0.1345
+"381","Flavobacteriaceae","URBAN3-3CA2022","2022","Cas_Abou",0.0540000000000001
+"382","Flavobacteriaceae","URBAN3-3CA2023","2023","Cas_Abou",0.07825
+"383","Flavobacteriaceae","URBAN3-3HB2022","2022","Holiday_Beach",0.1185
+"384","Flavobacteriaceae","URBAN3-3HB2023","2023","Holiday_Beach",0.0962500000000002
+"385","Halomonadaceae","CONTROL2-2JK2021","2021","Jan_Kok",0.0515000000000001
+"386","Marinomonadaceae","TOURIST3-1PM2020","2020","Porto_Marie",0.0605000000000001
+"387","Marinomonadaceae","URBAN3-1CA2020","2020","Cas_Abou",0.0535
+"388","Marinomonadaceae","URBAN3-2HB2020","2020","Holiday_Beach",0.083
+"389","Moraxellaceae","TOURIST1-1GK2020","2020","Grote_Knip",0.0860000000000001
+"390","Moraxellaceae","URBAN3-3CA2023","2023","Cas_Abou",0.05225
+"391","NS9_marine_group","TOURIST1-1MB2021","2021","Mambo_Beach",0.076
+"392","NS9_marine_group","TOURIST1-3MB2021","2021","Mambo_Beach",0.054
+"393","NS9_marine_group","TOURIST2-2MB2022","2022","Mambo_Beach",0.0705
+"394","NS9_marine_group","TOURIST2-2MB2023","2023","Mambo_Beach",0.05975
+"395","Nitrincolaceae","URBAN3-3HB2020","2020","Holiday_Beach",0.054
+"396","Pseudoalteromonadaceae","CONTROL1-1DB2020","2020","Directors_Bay",0.2115
+"397","Pseudoalteromonadaceae","CONTROL1-3DB2020","2020","Directors_Bay",0.0845
+"398","Pseudoalteromonadaceae","CONTROL2-3PJ2020","2020","Playa_Jeremy",0.0625
+"399","Pseudoalteromonadaceae","CONTROL2-3PJ2023","2023","Playa_Jeremy",0.05375
+"400","Pseudoalteromonadaceae","TOURIST1-1GK2020","2020","Grote_Knip",0.13
+"401","Pseudoalteromonadaceae","TOURIST2-1MB2020","2020","Mambo_Beach",0.446
+"402","Pseudoalteromonadaceae","TOURIST2-2MB2020","2020","Mambo_Beach",0.415
+"403","Pseudoalteromonadaceae","TOURIST2-3MB2020","2020","Mambo_Beach",0.4335
+"404","Pseudoalteromonadaceae","TOURIST2-3MB2023","2023","Mambo_Beach",0.0775000000000001
+"405","Pseudoalteromonadaceae","TOURIST3-1PM2020","2020","Porto_Marie",0.12
+"406","Pseudoalteromonadaceae","TOURIST3-3PM2023","2023","Porto_Marie",0.10525
+"407","Pseudoalteromonadaceae","URBAN2-1CE2020","2020","Coral_Estate",0.1635
+"408","Pseudoalteromonadaceae","URBAN3-1CA2020","2020","Cas_Abou",0.1975
+"409","Pseudoalteromonadaceae","URBAN3-1CA2023","2023","Cas_Abou",0.0552500000000001
+"410","Pseudoalteromonadaceae","URBAN3-1HB2020","2020","Holiday_Beach",0.4455
+"411","Pseudoalteromonadaceae","URBAN3-2HB2020","2020","Holiday_Beach",0.391
+"412","Pseudoalteromonadaceae","URBAN3-3CA2023","2023","Cas_Abou",0.103
+"413","Pseudoalteromonadaceae","URBAN3-3HB2020","2020","Holiday_Beach",0.3095
+"414","Rhodobacteraceae","CONTROL1-1DB2020","2020","Directors_Bay",0.229
+"415","Rhodobacteraceae","CONTROL1-1DB2021","2021","Directors_Bay",0.0690000000000001
+"416","Rhodobacteraceae","CONTROL1-1DB2022","2022","Directors_Bay",0.05125
+"417","Rhodobacteraceae","CONTROL1-2DB2021","2021","Directors_Bay",0.0575000000000001
+"418","Rhodobacteraceae","CONTROL1-3DB2020","2020","Directors_Bay",0.3035
+"419","Rhodobacteraceae","CONTROL1-3DB2021","2021","Directors_Bay",0.0720000000000001
+"420","Rhodobacteraceae","CONTROL1-3DB2023","2023","Directors_Bay",0.0960000000000001
+"421","Rhodobacteraceae","CONTROL2-1JK2021","2021","Jan_Kok",0.0710000000000001
+"422","Rhodobacteraceae","CONTROL2-1PJ2022","2022","Playa_Jeremy",0.104
+"423","Rhodobacteraceae","CONTROL2-2JK2021","2021","Jan_Kok",0.0665000000000001
+"424","Rhodobacteraceae","CONTROL2-3PJ2020","2020","Playa_Jeremy",0.051
+"425","Rhodobacteraceae","CONTROL2-3PJ2022","2022","Playa_Jeremy",0.0555000000000001
+"426","Rhodobacteraceae","CONTROL3-3PJ2021","2021","Playa_Jeremy",0.0570000000000001
+"427","Rhodobacteraceae","TOURIST1-1MB2021","2021","Mambo_Beach",0.4265
+"428","Rhodobacteraceae","TOURIST1-2GK2022","2022","Grote_Knip",0.10475
+"429","Rhodobacteraceae","TOURIST1-2MB2021","2021","Mambo_Beach",0.5
+"430","Rhodobacteraceae","TOURIST1-3GK2020","2020","Grote_Knip",0.0945000000000001
+"431","Rhodobacteraceae","TOURIST1-3MB2021","2021","Mambo_Beach",0.3245
+"432","Rhodobacteraceae","TOURIST2-1MB2022","2022","Mambo_Beach",0.503
+"433","Rhodobacteraceae","TOURIST2-1MB2023","2023","Mambo_Beach",0.46125
+"434","Rhodobacteraceae","TOURIST2-1PM2021","2021","Porto_Marie",0.0565000000000001
+"435","Rhodobacteraceae","TOURIST2-2MB2022","2022","Mambo_Beach",0.4155
+"436","Rhodobacteraceae","TOURIST2-2MB2023","2023","Mambo_Beach",0.47975
+"437","Rhodobacteraceae","TOURIST2-2PM2021","2021","Porto_Marie",0.0630000000000001
+"438","Rhodobacteraceae","TOURIST2-3MB2022","2022","Mambo_Beach",0.4765
+"439","Rhodobacteraceae","TOURIST2-3MB2023","2023","Mambo_Beach",0.3655
+"440","Rhodobacteraceae","TOURIST2-3PM2021","2021","Porto_Marie",0.0855000000000001
+"441","Rhodobacteraceae","TOURIST3-3GK2021","2021","Grote_Knip",0.0785000000000001
+"442","Rhodobacteraceae","TOURIST3-3PM2020","2020","Porto_Marie",0.2485
+"443","Rhodobacteraceae","TOURIST3-3PM2023","2023","Porto_Marie",0.0912500000000001
+"444","Rhodobacteraceae","URBAN1-3HB2021","2021","Holiday_Beach",0.3255
+"445","Rhodobacteraceae","URBAN2-1CE2021","2021","Coral_Estate",0.0655000000000001
+"446","Rhodobacteraceae","URBAN2-2CE2021","2021","Coral_Estate",0.0955000000000001
+"447","Rhodobacteraceae","URBAN2-2CE2023","2023","Coral_Estate",0.092
+"448","Rhodobacteraceae","URBAN2-3CE2020","2020","Coral_Estate",0.0820000000000001
+"449","Rhodobacteraceae","URBAN3-1HB2020","2020","Holiday_Beach",0.0885
+"450","Rhodobacteraceae","URBAN3-1HB2022","2022","Holiday_Beach",0.1655
+"451","Rhodobacteraceae","URBAN3-1HB2023","2023","Holiday_Beach",0.20175
+"452","Rhodobacteraceae","URBAN3-2CA2021","2021","Cas_Abou",0.0505
+"453","Rhodobacteraceae","URBAN3-2HB2020","2020","Holiday_Beach",0.066
+"454","Rhodobacteraceae","URBAN3-2HB2022","2022","Holiday_Beach",0.1125
+"455","Rhodobacteraceae","URBAN3-3CA2020","2020","Cas_Abou",0.159
+"456","Rhodobacteraceae","URBAN3-3CA2021","2021","Cas_Abou",0.0625000000000001
+"457","Rhodobacteraceae","URBAN3-3CA2022","2022","Cas_Abou",0.0585000000000001
+"458","Rhodobacteraceae","URBAN3-3HB2020","2020","Holiday_Beach",0.2485
+"459","Rhodobacteraceae","URBAN3-3HB2022","2022","Holiday_Beach",0.21475
+"460","SAR86_clade_fa","CONTROL1-1DB2021","2021","Directors_Bay",0.0545000000000001
+"461","SAR86_clade_fa","CONTROL1-1DB2022","2022","Directors_Bay",0.10675
+"462","SAR86_clade_fa","CONTROL1-1DB2023","2023","Directors_Bay",0.101
+"463","SAR86_clade_fa","CONTROL1-2DB2021","2021","Directors_Bay",0.0620000000000001
+"464","SAR86_clade_fa","CONTROL1-2DB2022","2022","Directors_Bay",0.1205
+"465","SAR86_clade_fa","CONTROL1-2DB2023","2023","Directors_Bay",0.10675
+"466","SAR86_clade_fa","CONTROL1-3DB2021","2021","Directors_Bay",0.0565000000000001
+"467","SAR86_clade_fa","CONTROL1-3DB2022","2022","Directors_Bay",0.115
+"468","SAR86_clade_fa","CONTROL1-3DB2023","2023","Directors_Bay",0.0960000000000001
+"469","SAR86_clade_fa","CONTROL2-1JK2021","2021","Jan_Kok",0.0575000000000001
+"470","SAR86_clade_fa","CONTROL2-1PJ2022","2022","Playa_Jeremy",0.0955000000000001
+"471","SAR86_clade_fa","CONTROL2-1PJ2023","2023","Playa_Jeremy",0.0917500000000001
+"472","SAR86_clade_fa","CONTROL2-2PJ2022","2022","Playa_Jeremy",0.111666666666667
+"473","SAR86_clade_fa","CONTROL2-2PJ2023","2023","Playa_Jeremy",0.0940000000000001
+"474","SAR86_clade_fa","CONTROL2-3JK2021","2021","Jan_Kok",0.0725000000000001
+"475","SAR86_clade_fa","CONTROL2-3PJ2022","2022","Playa_Jeremy",0.0930000000000001
+"476","SAR86_clade_fa","CONTROL2-3PJ2023","2023","Playa_Jeremy",0.0767500000000001
+"477","SAR86_clade_fa","CONTROL3-1PJ2021","2021","Playa_Jeremy",0.0820000000000001
+"478","SAR86_clade_fa","CONTROL3-2PJ2021","2021","Playa_Jeremy",0.0725000000000001
+"479","SAR86_clade_fa","CONTROL3-3PJ2021","2021","Playa_Jeremy",0.0765000000000001
+"480","SAR86_clade_fa","TOURIST1-1GK2022","2022","Grote_Knip",0.12225
+"481","SAR86_clade_fa","TOURIST1-1GK2023","2023","Grote_Knip",0.0645000000000001
+"482","SAR86_clade_fa","TOURIST1-2GK2022","2022","Grote_Knip",0.0847500000000001
+"483","SAR86_clade_fa","TOURIST1-2GK2023","2023","Grote_Knip",0.0952500000000001
+"484","SAR86_clade_fa","TOURIST1-3GK2022","2022","Grote_Knip",0.0912500000000001
+"485","SAR86_clade_fa","TOURIST1-3GK2023","2023","Grote_Knip",0.05925
+"486","SAR86_clade_fa","TOURIST2-1PM2021","2021","Porto_Marie",0.0735000000000001
+"487","SAR86_clade_fa","TOURIST2-2PM2021","2021","Porto_Marie",0.0740000000000001
+"488","SAR86_clade_fa","TOURIST3-1GK2021","2021","Grote_Knip",0.0635000000000001
+"489","SAR86_clade_fa","TOURIST3-1PM2022","2022","Porto_Marie",0.0822500000000001
+"490","SAR86_clade_fa","TOURIST3-1PM2023","2023","Porto_Marie",0.0567500000000001
+"491","SAR86_clade_fa","TOURIST3-2GK2021","2021","Grote_Knip",0.0650000000000001
+"492","SAR86_clade_fa","TOURIST3-2PM2022","2022","Porto_Marie",0.10575
+"493","SAR86_clade_fa","TOURIST3-2PM2023","2023","Porto_Marie",0.0635
+"494","SAR86_clade_fa","TOURIST3-3GK2021","2021","Grote_Knip",0.0640000000000001
+"495","SAR86_clade_fa","TOURIST3-3PM2022","2022","Porto_Marie",0.103
+"496","SAR86_clade_fa","TOURIST3-3PM2023","2023","Porto_Marie",0.05925
+"497","SAR86_clade_fa","URBAN1-1HB2021","2021","Holiday_Beach",0.0685000000000001
+"498","SAR86_clade_fa","URBAN1-2HB2021","2021","Holiday_Beach",0.0700000000000001
+"499","SAR86_clade_fa","URBAN2-1CE2021","2021","Coral_Estate",0.0710000000000001
+"500","SAR86_clade_fa","URBAN2-1CE2022","2022","Coral_Estate",0.0925000000000001
+"501","SAR86_clade_fa","URBAN2-2CE2022","2022","Coral_Estate",0.0797500000000001
+"502","SAR86_clade_fa","URBAN2-2CE2023","2023","Coral_Estate",0.07825
+"503","SAR86_clade_fa","URBAN2-3CE2021","2021","Coral_Estate",0.0940000000000001
+"504","SAR86_clade_fa","URBAN2-3CE2022","2022","Coral_Estate",0.10675
+"505","SAR86_clade_fa","URBAN2-3CE2023","2023","Coral_Estate",0.0917500000000002
+"506","SAR86_clade_fa","URBAN3-1CA2021","2021","Cas_Abou",0.0730000000000001
+"507","SAR86_clade_fa","URBAN3-1CA2022","2022","Cas_Abou",0.10025
+"508","SAR86_clade_fa","URBAN3-1CA2023","2023","Cas_Abou",0.0685000000000001
+"509","SAR86_clade_fa","URBAN3-1HB2022","2022","Holiday_Beach",0.0695000000000001
+"510","SAR86_clade_fa","URBAN3-2CA2021","2021","Cas_Abou",0.0820000000000001
+"511","SAR86_clade_fa","URBAN3-2CA2022","2022","Cas_Abou",0.11225
+"512","SAR86_clade_fa","URBAN3-2CA2023","2023","Cas_Abou",0.0872500000000001
+"513","SAR86_clade_fa","URBAN3-2HB2022","2022","Holiday_Beach",0.0850000000000001
+"514","SAR86_clade_fa","URBAN3-2HB2023","2023","Holiday_Beach",0.10325
+"515","SAR86_clade_fa","URBAN3-3CA2021","2021","Cas_Abou",0.0525000000000001
+"516","SAR86_clade_fa","URBAN3-3CA2022","2022","Cas_Abou",0.0927500000000001
+"517","SAR86_clade_fa","URBAN3-3CA2023","2023","Cas_Abou",0.071
+"518","SAR86_clade_fa","URBAN3-3HB2023","2023","Holiday_Beach",0.0910000000000002
+"519","Saprospiraceae","URBAN1-3HB2021","2021","Holiday_Beach",0.0945
+"520","Sphingomonadaceae","CONTROL2-2JK2021","2021","Jan_Kok",0.0530000000000001
+"521","Vibrionaceae","CONTROL1-1DB2020","2020","Directors_Bay",0.182
+"522","Vibrionaceae","CONTROL1-1DB2023","2023","Directors_Bay",0.10825
+"523","Vibrionaceae","CONTROL1-2DB2023","2023","Directors_Bay",0.0965
+"524","Vibrionaceae","CONTROL1-3DB2020","2020","Directors_Bay",0.135
+"525","Vibrionaceae","CONTROL2-1PJ2023","2023","Playa_Jeremy",0.0890000000000001
+"526","Vibrionaceae","CONTROL2-3PJ2023","2023","Playa_Jeremy",0.112
+"527","Vibrionaceae","TOURIST1-1GK2020","2020","Grote_Knip",0.0930000000000001
+"528","Vibrionaceae","TOURIST1-1GK2023","2023","Grote_Knip",0.13325
+"529","Vibrionaceae","TOURIST1-2GK2023","2023","Grote_Knip",0.1125
+"530","Vibrionaceae","TOURIST1-3GK2020","2020","Grote_Knip",0.0550000000000001
+"531","Vibrionaceae","TOURIST2-1MB2020","2020","Mambo_Beach",0.228
+"532","Vibrionaceae","TOURIST2-2MB2020","2020","Mambo_Beach",0.3745
+"533","Vibrionaceae","TOURIST2-3MB2020","2020","Mambo_Beach",0.138
+"534","Vibrionaceae","TOURIST2-3MB2023","2023","Mambo_Beach",0.0867500000000001
+"535","Vibrionaceae","TOURIST3-1PM2020","2020","Porto_Marie",0.0515000000000001
+"536","Vibrionaceae","TOURIST3-2PM2023","2023","Porto_Marie",0.135
+"537","Vibrionaceae","TOURIST3-3PM2023","2023","Porto_Marie",0.0857500000000001
+"538","Vibrionaceae","URBAN2-3CE2023","2023","Coral_Estate",0.11925
+"539","Vibrionaceae","URBAN3-1CA2020","2020","Cas_Abou",0.0645
+"540","Vibrionaceae","URBAN3-1CA2023","2023","Cas_Abou",0.1285
+"541","Vibrionaceae","URBAN3-1HB2020","2020","Holiday_Beach",0.228
+"542","Vibrionaceae","URBAN3-2CA2023","2023","Cas_Abou",0.146
+"543","Vibrionaceae","URBAN3-2HB2020","2020","Holiday_Beach",0.077
+"544","Vibrionaceae","URBAN3-2HB2023","2023","Holiday_Beach",0.1015
+"545","Vibrionaceae","URBAN3-3HB2020","2020","Holiday_Beach",0.053

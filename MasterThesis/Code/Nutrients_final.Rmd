@@ -1,0 +1,322 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+require("knitr")
+opts_knit$set(root.dir =) #put path to data here
+library(tidyverse) #important for dataframes
+library(ggpubr) #redefine ggplots
+library(vegan)
+library(matrixStats) #stats of rows and columns
+library(viridis) # colorblind colorscheme
+library(patchwork) #combine multiple plots
+library(scales) #for axis and legend labels, makes commas instead of periods for large numbers
+library(kableExtra) #exportation of data table
+library(RColorBrewer) #more colors
+library(rstatix)
+```
+
+sampling background: For the years of 2020, 2021, 2022 and 2023 water samples have been taken of different sides off the island of Curaçao. the sampling sites have been divided into 'Status' of Control, Urban and Tourist. Every Status has been sampled three times along different parts of the island. At every individual sampling site samples were taken from three different 'Placings' (Surface, Reef, Branding)
+
+```{r General, include=FALSE}
+#Load dataframe
+nuts <- read.csv("Final_DOC_TN_Nuts_tourist.csv")
+```
+
+## clean up
+```{r}
+#Manipulate df to get only the columns that will be needed for further analysis and adjust column names to get rid of the periods
+cleaned_nuts <- nuts[, !(colnames(nuts) %in% c("Code","Time", "Coordinates", "TP..uM."))] %>% filter(!(Site%in% c("Blank", "Offshore"))) 
+
+colnames(cleaned_nuts)[which(names(cleaned_nuts) == "DOC..uM." )] <- "DOC"
+colnames(cleaned_nuts)[which(names(cleaned_nuts) == "TN..uM." )] <- "TN"
+colnames(cleaned_nuts)[which(names(cleaned_nuts) == "PO4..uM." )] <- "PO4"
+colnames(cleaned_nuts)[which(names(cleaned_nuts) == "NH4..uM." )] <- "NH4"
+colnames(cleaned_nuts)[which(names(cleaned_nuts) == "NO3.NO2..uM." )] <- "NO3_NO2"
+colnames(cleaned_nuts)[which(names(cleaned_nuts) == "NO2..uM." )] <- "NO2"
+colnames(cleaned_nuts)[which(names(cleaned_nuts) == "NO3..uM." )] <- "NO3"
+
+cleaned_nuts <- cleaned_nuts %>%
+  mutate(across(c("DOC", "TN", "PO4", "NH4", "NO3_NO2", "NO2", "NO3"), as.numeric)) %>%
+  filter(if_any(everything(), ~ !is.na(.) & . != "")) #ensure that the values are in the right format
+
+cleaned_nuts$Date <- as.character(cleaned_nuts$Date) # ensure that the Date column is set as character
+cleaned_nuts$Date <- dmy(cleaned_nuts$Date) #change Date column so that it is recognized as date format
+
+head(cleaned_nuts)
+```
+
+## Data distribution
+Before starting statistical analysis test for data distribution, using the Shapiro-Wilk test. If the p-value is > 0.05 it is normally distributed. If smaller, it isn't.
+```{r echo=FALSE}
+numeric_nuts <- cleaned_nuts[, !(colnames(cleaned_nuts) %in% c("Sample.Name", "Year", "Date", "Site", "Area", "Status", "Placing"))] #subset dataframe to exclude metadata
+
+nuts_shapiro <- numeric_nuts %>% colnames() %>% as.data.frame #getting all the column names into a dataframe called "nuts_shapiro"
+colnames(nuts_shapiro)[1] <- "Nutrients" #naming the column as "Nutrients"
+
+
+nuts_shapiro$p <- sapply(1:ncol(numeric_nuts), function(n){shapiro.test(numeric_nuts[,n])$p}) #performing shapiro test on each feature and getting the p-value as a column 'p'
+nuts_shapiro$p_adj <- p.adjust(nuts_shapiro$p, method="fdr") #adding a column "p_adj" with corrected p-values. The method used is FDR (Benjamini-Hochberg correction) 
+nuts_shapiro$distribution <- ifelse(nuts_shapiro$p_adj<0.05, "Non-normal", "Normal")
+
+nuts_shapiro %>% arrange(p) %>% head(n=5) #printing the top 5 nutrients
+
+paste("No.of features with normal distribution:", sum(nuts_shapiro$distribution=="Normal"))
+paste("No.of features with non-normal distribution:", sum(nuts_shapiro$distribution=="Non-normal"))
+```
+
+## Boxplots 
+Arranged a common visualization for all the individual nutrient values throughout area 
+```{r}
+# List of numeric columns to include in combined plot (excluding 'Status' and 'Year')
+numeric_columns <- names(cleaned_nuts)[!(names(cleaned_nuts) %in% c("Status", "Year", "Sample.Name", "Date", "Site", "Area", "Placing"))]
+```
+
+
+```{r}
+# Replace underscores with spaces in Site column
+cleaned_nuts <- cleaned_nuts %>% 
+  mutate(Site = gsub("_", " ", Site)) 
+```
+
+### PLACING 
+Plot that compares the different Placings (Branding, surface, reef) for each sampling site, for every year that was sampled. if no significant difference occurs between the three placings the samples from one site can be used as 'replicates'
+```{r}
+plot_function <- function(var, include_legend = FALSE) {
+  legend_pos <- if (include_legend) "bottom" else "none"
+  
+  p <- ggplot(cleaned_nuts, aes(x = Site,
+                                y = .data[[var]], 
+                                color = factor(Placing))) +
+    geom_point(position = position_jitterdodge(jitter.width = 0.2, dodge.width = 0.75),
+               size = 1.5) +
+    geom_vline(
+      xintercept = seq(1.5, length(unique(interaction(cleaned_nuts$Site, cleaned_nuts$Placing))) - 0.5),
+      linetype = "dotted", color = "grey60"
+    ) +
+    labs(
+      title = var,
+      x = "Placings in Watercolumn by site",
+      color = "Placing",
+      y = "Concentration [µM]"
+    ) +
+    scale_color_manual(values = c("Surface" = "#440154", "Reef" = "#f98e09", "Branding" = "#21918c"),
+                       labels = c("Surface", "Reef", "Branding")) +   
+    theme_classic(base_size = 12) +
+    theme(
+      panel.grid.major.x = element_blank(),
+      panel.grid.minor.x = element_blank(),
+      axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1, size = 8),
+      axis.title.x = element_blank(),
+      plot.title = element_text(hjust = 0.5, face = "bold", size = 14),
+      legend.title = element_text(face = "bold"),
+      axis.title.y = element_text(size = 10),
+      legend.position = legend_pos
+    ) +
+    geom_pwc(
+      aes(group = Placing),
+      method = "dunn_test",
+      label = "p.signif",
+      p.adjust.method = "bonferroni",
+      hide.ns = TRUE,
+      tip.length = 0.03
+    ) +
+    facet_wrap(~ Status, scales = "free_x", nrow = 1)
+  
+  # Save the plot
+  ggsave(
+    filename = paste0("Nuts_placing", var, ".png"),
+    plot = p,
+    width = 8,      # Width in inches
+    height = 6,     # Height in inches
+    dpi = 300       # Resolution
+  )
+  
+  return(p)
+}
+
+for (i in seq_along(numeric_columns)) {
+  var <- numeric_columns[i]
+  include_legend <- (i %% 2 == 1 )
+  plot_function(var, include_legend)
+}
+```
+
+Kruskal wallis and Dunns posthoc tests for plot Nuts_placing, checking for significant differences between the different Placings (Branding, surface, reef) for the individual sampling sites across the years
+```{r}
+kruskal_results_placing <- cleaned_nuts %>%
+  pivot_longer(cols = all_of(numeric_columns), names_to = "variable", values_to = "value") %>%
+  group_by(Year, Site, variable) %>%
+  kruskal_test(value ~ Placing) %>% 
+  mutate (test = "Kruskal-Wallis",
+    comparison = "Overall")  # No pairwise adjustment
+
+write_csv(kruskal_results_placing, "Kruskal_test_placing.csv")
+
+dunn_results_placing <- cleaned_nuts %>%
+  pivot_longer(cols = all_of(numeric_columns), names_to = "variable", values_to = "value") %>%
+  group_by(Year, Site, variable) %>%
+  dunn_test(value ~ Placing, p.adjust.method = "bonferroni") %>%
+  mutate(test = "Dunn", 
+         comparison = paste(group1, "vs", group2)) %>%
+  mutate(p_signif = p_format(p.adj, add.signif = TRUE))
+
+write_csv(dunn_results_placing, "dunn_test_placing.csv")
+
+```
+
+######## -> as no significant difference occurred samples can be pooled ########
+
+### SITE
+```{r}
+# Define the desired order for how the sites are plotted 
+desired_site_order <- c(
+  "Directors Bay", "Jan Kok", "Playa Jeremy", "Holiday Beach", 
+  "Coral Estate", "Cas Abou", "Mambo Beach", "Porto Marie", "Grote Knip"
+)
+
+# Rearrange Site with new order
+cleaned_nuts <- cleaned_nuts %>%
+  filter(Site %in% desired_site_order) %>%  # Filter to only desired Sites
+  mutate(Site = factor(Site, levels = desired_site_order))
+
+cleaned_nuts$Year <- as.factor(cleaned_nuts$Year) #make sure Year is a factor for color assignment
+
+cleaned_nuts <- cleaned_nuts %>%
+  mutate(Status = factor(Status, levels = c("Control", "Urban", "Tourist"))) #reorder status in desired order
+```
+
+the following convention for symbols indicating statistical significance:
+
+ns: p > 0.05
+*: p <= 0.05
+**: p <= 0.01
+***: p <= 0.001
+****: p <= 0.0001
+```{r}
+#plot individual sites
+plot_function <- function(var, include_legend = FALSE) {
+  legend_pos <- if (include_legend) "bottom" else "none"
+  
+  s <- ggplot(cleaned_nuts, aes(x = Site,
+                                y = .data[[var]], 
+                                color = factor(Year))) +
+    geom_point(position = position_jitterdodge(jitter.width = 0.2, dodge.width = 0.75),
+               size = 1.5) +
+    geom_vline(
+      xintercept = seq(1.5, length(unique(interaction(cleaned_nuts$Site, cleaned_nuts$Year))) - 0.5),
+      linetype = "dotted", color = "grey60"
+    ) +
+    labs(
+      title = var,
+      x = "Sites by Year",
+      color = "Year",
+      y = "Concentration [µM]"
+    ) +
+    scale_color_manual(values = c("2020" = "#440154", "2021" = "#f98e09", "2022" = "#21918c", "2023" = "#b73779"),
+                       labels = c("2020", "2021", "2022", "2023")) +   
+    theme_classic(base_size = 12) +
+    theme(
+      panel.grid.major.x = element_blank(),
+      panel.grid.minor.x = element_blank(),
+      axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1, size = 8),
+      axis.title.x = element_blank(),
+      plot.title = element_text(hjust = 0.5, face = "bold", size = 14),
+      legend.title = element_text(face = "bold"),
+      axis.title.y = element_text(size = 10),
+      legend.position = legend_pos
+    ) +
+    geom_pwc(
+      aes(group = Year),
+      method = "dunn_test",
+      label = "p.signif",
+      p.adjust.method = "bonferroni",
+      hide.ns = TRUE,
+      tip.length = 0.03
+    ) +
+    facet_wrap(~ Status, scales = "free_x", nrow = 1)
+  
+  # Save the plot
+  ggsave(
+    filename = paste0("Nuts_site", var, ".png"),
+    plot = s,
+    width = 8,      # Width in inches
+    height = 6,     # Height in inches
+    dpi = 300       # Resolution
+  )
+  
+  return(s)
+}
+
+for (i in seq_along(numeric_columns)) {
+  var <- numeric_columns[i]
+  include_legend <- (i %% 2 == 1 )
+  plot_function(var, include_legend)
+}
+```
+
+Kruskal Wallis and Dunns test for Years per Site 
+```{r}
+kruskal_results_site <- cleaned_nuts %>%
+  pivot_longer(cols = all_of(numeric_columns), names_to = "variable", values_to = "value") %>%
+  group_by(Status, Site, variable) %>%
+  kruskal_test(value ~ Year) %>% 
+  mutate (test = "Kruskal-Wallis",
+    comparison = "Overall")  # No pairwise adjustment
+
+write_csv(kruskal_results_site, "Kruskal_test_site.csv")
+
+dunn_results_site <- cleaned_nuts %>%
+  pivot_longer(cols = all_of(numeric_columns), names_to = "variable", values_to = "value") %>%
+  group_by(Status, Site, variable) %>%
+  dunn_test(value ~ Year, p.adjust.method = "bonferroni") %>%
+  mutate(test = "Dunn", 
+         comparison = paste(group1, "vs", group2)) %>%
+  mutate(p_signif = p_format(p.adj, add.signif = TRUE))
+
+write_csv(dunn_results_site, "dunn_test_site.csv")
+```
+
+## Data table 
+Create a data table that shows the means and standard deviation for every nutrient across the 3 status and the 4 years as well as the DOC:TN ratio which responds to the redfild ratio of C:N:P in a system 
+```{r}
+# Compute DOC/TN ratio for each row in `cleaned_nuts`
+cleaned_nuts <- cleaned_nuts %>%
+  mutate(DOC_TN_Ratio = DOC / TN)  # Ensure DOC and TN columns exist
+
+# Reshape and summarize data (including DOC/TN ratio and n)
+mean_table <- cleaned_nuts %>%
+  pivot_longer(cols = c(8:14, DOC_TN_Ratio), names_to = "Nutrient", values_to = "Value") %>%
+  group_by(Nutrient, Year, Site) %>%
+  summarize(
+    Mean = mean(Value, na.rm = TRUE),
+    SD = sd(Value, na.rm = TRUE),
+    N = sum(!is.na(Value)),  # Count non-missing values
+    .groups = "drop"
+  ) %>%
+  mutate(
+    Formatted = case_when(
+      is.na(SD) ~ sprintf("%.2f (n = %d)", Mean, N),
+      TRUE      ~ sprintf("%.2f ± %.2f (n = %d)", Mean, SD, N)
+    )
+  ) %>%
+  unite("Site_Year", Year, Site, sep = "_") %>%
+  select(Nutrient, Site_Year, Formatted) %>%
+  pivot_wider(names_from = Site_Year, values_from = Formatted)
+
+names(mean_table) <- gsub("_", " ", names(mean_table))
+
+transposed_table <- mean_table %>%
+  pivot_longer(-Nutrient, names_to = "Site_Year", values_to = "Formatted") %>%
+  separate(Site_Year, into = c("Year", "Site"), sep = " ", extra = "merge") %>%
+  mutate(Year = as.integer(Year),
+         Site = factor(Site, levels = desired_site_order)) %>%  # Make sure Year is numeric for proper sorting
+  arrange(Site, Year) %>%
+  unite("Site_Year", Year, Site, sep = " ") %>%
+  pivot_wider(names_from = Nutrient, values_from = Formatted)
+
+# View the sorted result
+print(transposed_table)
+```

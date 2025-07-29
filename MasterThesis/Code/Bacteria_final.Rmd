@@ -1,0 +1,830 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+Following the script of: Delgadillo-Ordoñez, N., Garcias-Bonet, N., Raimundo, I. et al. Probiotics reshape the coral microbiome in situ without detectable off-target effects in the surrounding environment. Commun Biol 7, 434 (2024). https://doi.org/10.1038/s42003-024-06135-3
+
+# Libraries
+```{r}
+library(tidyverse) #Collection of packages designed for data science.
+library(ggplot2) #Package to create graphs (see this link for cheatsheet: https://ggplot2.tidyverse.org)
+library(vegan) #Comprehensive toolbox for ecological data analysis, particularly for multivariate data.
+library(pairwiseAdonis) #is an extension of the adonis function from the vegan package, providing pairwise comparisons 
+#for multivariate analysis of variance using distance matrices. 
+#It is particularly useful for identifying significant differences between groups in complex datasets.
+library(dplyr) #Provides grammar for data manipulation.
+library(scales) #Provides tools to customize graphs.
+library(grid) #Allows fine tuning of graphs, often used to enhance the aspect of ggplot2 graphs.
+library(phyloseq) #is designed for the analysis of microbiome census data. It provides tools 
+#for importing, storing, analyzing, and visualizing microbiome data.
+library(grafify) #is designed to help with creating and customizing publication-ready graphics.
+#It provides functions to enhance ggplot2 plots
+#install.packages(microbiome)library(microbiome) #Provides toolpackas for analyzing and visualizing microbiome data.
+library(dunn.test) #Provides the Dunn's test for multiple comparisons following a Kruskal-Wallis test. 
+#This test is useful for non-parametric post-hoc analysis to determine which groups differ from each other.
+library(stats) #Core package in R that provides a wide range of statistical functions and tools.
+library(ggordiplots) #used to visualize  ordination results (e.g., PCA, NMDS, PCoA) using ggplot2. 
+#It provides functions to create plots that are useful for interpreting and presenting multivariate analysis results.
+library(DescTools) #Provides a range of functions for descriptive statistics, data transformation, and statistical tests.
+library(ANCOMBC) #provides tools for performing the Analysis of Composition of Microbiomes with Bias Correction (ANCOM-BC). 
+#It is designed for differential abundance analysis in microbiome data, specifically addressing biases and improving the accuracy of statistical inference.
+library(psadd)
+library(MiscMetabar)
+library(stringr)
+library(readxl) 
+library(patchwork)
+library(viridis)
+library(colorBlindness)
+library(ggpubr)
+library(microbiome)
+```
+
+# Data input
+Import rawdata and repair mapfile (metdata)
+```{r}
+taxfile_tourist <- read.csv( header=TRUE, row.names=1) #import taxonomy file (put path before header)
+mapfile_tourist <- read_excel() #imports metadata file as excel
+mapfile_tourist <- as.data.frame(mapfile_tourist) 
+rownames(mapfile_tourist) <- mapfile_tourist[[1]] # asign rownames 
+mapfile_tourist[[1]] <- NULL  # remove the now-duplicated column #delete column one which is now rownames
+OTUs_tourist <- read.csv( header=TRUE, row.names=1) #import OTU file
+```
+
+# Data prep
+clean up OTU file
+```{r}
+OTUs_tourist <- OTUs_tourist[,- 1] #delete first column that gives numbers of OTUs
+OTUs_tourist <- OTUs_tourist[!rownames(OTUs_tourist) %in% c("P1_mock", "P2_mock", "P3_mock"), ] #delete the rows with the control samples
+OTUs_tourist_transposed <- t(OTUs_tourist) #switch rows and columns so that OTU and taxonomy file are in the same format
+```
+
+Tables sanity check
+```{r}
+class(mapfile_tourist$Year) 
+class(mapfile_tourist$Status)
+as.character(mapfile_tourist$Year)
+```
+
+Clean up mapfile and correct spelling mistakes 
+```{r}
+mapfile_tourist <- mapfile_tourist[!rownames(mapfile_tourist) %in% c("CU23F_CI", "CUB:EK20_TRST_001", "CU21_TRST_030"), ] #delete rows that don't contain data
+mapfile_tourist <- mapfile_tourist[!(mapfile_tourist$Site %in% c("Jan Kok")), ]
+## fix spelling mistakes throughout columns in metadata file (mapfile)
+fix_spelling <- c("URBNA" = "URBAN",
+                  "TOURST" = "TOURIST",
+                  "CONTROL1-2DB 2022" = "CONTROL1-2DB2022",
+                  "CONTROL2-3PJ 2020" = "CONTROL2-3PJ2020",
+                  "Porto Marie" = "Porto_Marie",
+                  "Coral Estate" = "Coral_Estate",
+                  "Playa Jeremy" = "Playa_Jeremy",
+                  "Cas Abou" = "Cas_Abou",
+                  "Coral Estate" = "Coral_Estate",
+                  "Grote Knip" = "Grote_Knip",
+                  "Mambo Beach" = "Mambo_Beach",
+                  "Holiday Beach" = "Holiday_Beach",
+                  "Directors Bay" = "Directors_Bay")
+
+# Apply to all columns that contain the misspelled words
+mapfile_tourist <- mapfile_tourist %>%
+  mutate(across(
+    c( Label, Status, Site),
+    ~ str_replace_all(as.character(.), fix_spelling)
+  ))
+```
+
+transform dataframes
+```{r}
+## Transform taxfile in a matrix
+taxfile_tourist <- as.matrix(taxfile_tourist, nrow=nrow(taxfile_tourist))
+
+class(taxfile_tourist)
+head(taxfile_tourist)
+
+## Transform mapfile (metadata file) in Dataframe
+mapfile_tourist <- data.frame(mapfile_tourist, nrow=nrow(mapfile_tourist))
+class(mapfile_tourist)
+
+mapfile_tourist$Year_Site <- paste(mapfile_tourist$Year, mapfile_tourist$Site, sep = "_")
+
+list(mapfile_tourist$Year_Site)
+unique(mapfile_tourist$Year_Site)
+list(mapfile_tourist$ID)
+
+##Transform OTUs_counts into a matrix 
+
+OTUs_tourist_transposed <- as.matrix(OTUs_tourist_transposed, nrow=nrow(OTUs_tourist_transposed))
+
+class(OTUs_tourist_transposed)
+```
+
+Reoder mapfile 
+```{r}
+## Order variable levels (by default is alphabetic order, you want your control to be the reference) 
+mapfile_tourist$Year_Site <- ordered(mapfile_tourist$Year_Site, levels= c("2020_Directors_Bay", "2020_Playa_Jeremy", "2020_Holiday_Beach", "2020_Coral_Estate", "2020_Cas_Abou", "2020_Mambo_Beach", "2020_Porto_Marie", "2020_Grote_Knip", "2021_Directors_Bay", "2021_Playa_Jeremy", "2021_Holiday_Beach", "2021_Coral_Estate", "2021_Cas_Abou", "2021_Mambo_Beach", "2021_Porto_Marie", "2021_Grote_Knip", "2022_Directors_Bay", "2022_Playa_Jeremy", "2022_Holiday_Beach", "2022_Coral_Estate", "2022_Cas_Abou", "2022_Mambo_Beach", "2022_Porto_Marie", "2022_Grote_Knip", "2023_Directors_Bay", "2023_Playa_Jeremy", "2023_Holiday_Beach", "2023_Coral_Estate", "2023_Cas_Abou", "2023_Mambo_Beach", "2023_Porto_Marie", "2023_Grote_Knip"))
+
+levels(mapfile_tourist$Year_Site)
+
+mapfile_tourist$Year <- ordered (mapfile_tourist$Year, levels = c("2020", "2021", "2022", "2023"))
+levels(mapfile_tourist$Year)
+
+mapfile_tourist$Site <- ordered (mapfile_tourist$Site, levels = c("Directors_Bay","Playa_Jeremy", "Holiday_Beach","Coral_Estate", "Cas_Abou", "Mambo_Beach", "Porto_Marie","Grote_Knip"))
+levels(mapfile_tourist$Site)
+```
+
+# Phyloseq
+Create combined phyloseq and clean it up
+```{r}
+phyloseq_tourist <- phyloseq(otu_table(OTUs_tourist_transposed, taxa_are_rows=TRUE), tax_table(taxfile_tourist), sample_data(mapfile_tourist))
+phyloseq_tourist
+
+
+#phyloseq-class experiment-level object
+#otu_table()   OTU Table:         [ 2403 taxa and 135 samples ]
+#sample_data() Sample Data:       [ 135 samples by 12 sample variables ]
+#tax_table()   Taxonomy Table:    [ 2403 taxa by 7 taxonomic ranks ]
+
+# Filter out chloroplasts and mitochondria 
+phyloseq_tourist_clean <- phyloseq_tourist %>%
+  subset_taxa(
+    Kingdom == "Bacteria" &
+      Family  != "Mitochondria" &
+      Order   != "Chloroplast"
+    
+  )
+phyloseq_tourist_clean
+
+#phyloseq-class experiment-level object
+#otu_table()   OTU Table:         [ 2344 taxa and 135 samples ]
+#sample_data() Sample Data:       [ 135 samples by 12 sample variables ]
+#tax_table()   Taxonomy Table:    [ 2344 taxa by 7 taxonomic ranks ]
+
+
+phyloseq_tourist_clean1 <- phyloseq_tourist_clean %>%
+  prune_taxa(taxa_sums(.) > 1, .)
+phyloseq_tourist_clean1
+
+#phyloseq-class experiment-level object
+#otu_table()   OTU Table:         [ 1746 taxa and 135 samples ]
+#sample_data() Sample Data:       [ 135 samples by 12 sample variables ]
+#tax_table()   Taxonomy Table:    [ 1746 taxa by 7 taxonomic ranks ]
+```
+
+# Rarefaction 
+There are contrasting opinions on rarefaction (to rarefy or not to rarefy) so, based on your question, it's up to you :)
+Our suggestion is: if you want to compare microbiomes across samples --> RAREFY
+                   if you want to describe microbiomes without any comparisons --> DO NOT RAREFY
+Rarefaction is an essential step in order to compare samples across treatments or other variables of interest.
+It is fundamental because without it we would compare samples without even reads. So, for example, we would compare samples with 1,000 reads
+with others with 50,000 reads! That is no good!
+Rarefaction avoids this problem
+Drawback of rarefaction: possibility to lose samples and information
+That's why is important to create a rarefaction curve to decide at what sampling depth would make sense to rarefy your samples.
+```{r}
+#Create a rarefaction curve:
+#png("rarefaction_curve.png", width = 1000, height = 800, res = 150)
+otu.rare = otu_table(phyloseq_tourist_clean1)
+otu.rare = as.data.frame(t(otu.rare))
+sample_names = rownames(otu.rare)
+otu.rarecurve = rarecurve(otu.rare, step = 500, label = T, col = "antiquewhite4", xlab = "Sequencing Depth", ylab="Observed OTUs")
+rarecurve(otu.rare, step = 500, label = TRUE, col = "antiquewhite4",
+          xlab = "Sequencing Depth", ylab = "Observed OTUs",
+          xaxt = "n") # suppress default x-axis
+
+# Add vertical line at 20000
+abline(v = 2000, col = "blue", lty = 2, lwd = 2)
+
+# Custom x-axis with commas for large numbers
+axis(side = 1, 
+     at = axTicks(1), 
+     labels = comma(axTicks(1)))
+
+#dev.off()
+```
+There are several ways to decide how to rarefy based on your rarefaction curve:
+1) rarefy at the lowest depth: will avoid losing samples but you may lose a lot of information:
+rarefied <- rarefy_even_depth(phyloseq_tourist_clean1, rngseed=1, sample.size=min(sample_sums(phyloseq_tourist_clean1)), replace=F) 
+set.seed(1)
+2) custom choice of rarefaction: (to me is a better solution):
+rarefied <- rarefy_even_depth(phyloseq_tourist_clean1, sample.size = 2000, replace = FALSE, rngseed = TRUE)
+set.seed(TRUE)
+for both methods we suggest to copy and paste your results below.
+
+```{r}
+rarefied <- rarefy_even_depth(phyloseq_tourist_clean1, sample.size = 2000, replace = FALSE, rngseed = TRUE)
+set.seed(TRUE)
+```
+rarefied output: 466OTUs were removed because they are no longer 
+                 present in any sample after random subsampling
+                 
+```{r}
+# get number of OTUs before and after rarefying 
+ntaxa(phyloseq_tourist_clean1)  # Before
+ntaxa(rarefied) #after
+
+```
+
+# alpha diversity 
+```{r}
+# Calculate alpha diversity metrics with phyloseq function "estimate_richness"
+richness_rarefied <- estimate_richness(rarefied)
+head(richness_rarefied)
+# Extract metadata from the phyloseq object
+metadata_df <- as.data.frame(sample_data(rarefied))
+# Merge richness data with metadata based on sample names
+richness_with_metadata <- merge(richness_rarefied, metadata_df, by = "row.names")
+# Assign meaningful column names (optional)
+# colnames(richness_with_metadata)[0] <- "SampleID"
+# Convert row names to a column and remove the original row names column
+#richness_with_metadata$SampleID <- rownames(richness_with_metadata)
+# Now, 'richness_with_metadata' contains both richness data and metadata
+print(richness_with_metadata)
+```
+ Make a dataframe and csv file of the diversity indexes
+```{r}
+Alpha_diversity_df <- data.frame(richness_with_metadata)
+write.csv(Alpha_diversity_df, file = "Alpha_diversity_rarefied.csv")
+```
+
+Normality test for alpha diversity 
+```{r}
+shapiro.test(richness_with_metadata$Observed) #not-normal distributed
+shapiro.test(richness_with_metadata$Shannon) # not-normal distributed
+shapiro.test(richness_with_metadata$Simpson) # not-normal distributed
+shapiro.test(richness_with_metadata$Chao1)  # not-normal distributed
+```
+Stats summary of alpha diversity 
+```{r}
+names(richness_with_metadata)
+```
+
+```{r}
+# Create a new dataset in which we put only the indices we want 
+alpha_index_df_rarefied_all <- richness_with_metadata %>%
+  select(Observed, Chao1, Shannon, Simpson, Year, Site) 
+
+# Create an object in which we specify to calculate mean, median and standard deviation
+alphastats <- list(
+  mean = ~mean (.x, na.rm = TRUE),
+  median = ~median(.x, na.rm = TRUE),
+  sd = ~sd(.x, na.rm = TRUE)
+)
+
+# Create a summary of the Alpha diversity with mean, median and sd of our samples grouped by sampling time and treatment in this case 
+stats_summary_alpha_diversity_all <- alpha_index_df_rarefied_all %>%
+  group_by(Year, Site) %>%
+  summarise(across(c(Observed, Chao1, Shannon, Simpson), alphastats) )
+```
+
+save summary
+```{r}
+write.csv(file = "Summary_of_stats_Alpha_diversity_all_samples.csv", stats_summary_alpha_diversity_all)
+```
+
+
+```{r}
+# Clean and order 'Site' column once
+alpha_index_df_rarefied_all <- alpha_index_df_rarefied_all %>%
+  mutate(Site = gsub("_", " ", Site)) %>%
+  mutate(Site = factor(Site, levels = c(
+    "Directors Bay", "Playa Jeremy", "Holiday Beach",
+    "Coral Estate", "Cas Abou", "Mambo Beach",
+    "Porto Marie", "Grote Knip"
+  )))
+```
+
+# Plots 
+alpha diversity Shannon
+```{r}
+alpha_div_H <- alpha_index_df_rarefied_all %>%
+  pivot_longer(cols = c(Shannon), names_to = "index", values_to = "value") %>%
+  mutate(index_sorted = factor(index, levels = c("Shannon"), labels = c("OTUs"))) %>%
+  ggplot(aes(x = Year, y = value, fill = Site)) +
+  geom_boxplot(outlier.shape = NA) + 
+  theme_classic() + theme(panel.grid.major = element_blank(),
+                     panel.grid.minor = element_blank(),
+                     axis.title = element_text(size=16),
+                     axis.text.y = element_text(size = 14)) +
+  labs(title = "H'",
+       y = "Diversity index") +
+#  geom_pwc(
+#      aes(group = Year),
+#      method = "dunn_test",
+#      label = "p.signif",
+#      p.adjust.method = "bonferroni",
+#      hide.ns = TRUE,
+#      tip.length = 0.03
+#    ) +
+  scale_fill_viridis_d(option = "C") +
+  theme(legend.position = "none", strip.text = element_text(colour = "black"), strip.background = element_rect(fill = "white", colour = "black"),
+        panel.grid.major = element_blank(), panel.grid.minor = element_blank(), text = element_text(size = 14))
+alpha_div_H
+```
+
+save Shannon plot 
+```{r}
+ggsave("alpha_diversity_Shannon.png", plot = alpha_div_H)
+```
+
+alpha diversity Chao1
+```{r}
+alpha_div_C1 <- alpha_index_df_rarefied_all %>%
+  pivot_longer(cols = c(Chao1), names_to = "index", values_to = "value") %>%
+  mutate(index_sorted = factor(index, levels = c("Chao1"), labels = c("OTUs"))) %>%
+  ggplot(aes(x = Year, y = value, fill = Site)) +  ylim(0,200)+
+  geom_boxplot(outlier.shape = NA) + 
+  theme_classic() + theme(panel.grid.major = element_blank(),
+                     panel.grid.minor = element_blank(),
+                     axis.title = element_text(size=16),
+                     axis.text.y = element_text(size = 14)) +
+    labs(title = "Chao1",
+             y = "Diversity index") +
+ # geom_pwc(
+ #     aes(group = Year),
+ #     method = "dunn_test",
+ #     label = "p.signif",
+#    p.adjust.method = "bonferroni",
+#      hide.ns = TRUE,
+#      tip.length = 0.03
+#    ) +
+   scale_fill_viridis_d(option = "C") +
+  theme(legend.position = "none", strip.text = element_text(colour = "black"), strip.background = element_rect(fill = "white", colour = "black"),
+        panel.grid.major = element_blank(), panel.grid.minor = element_blank(), text = element_text(size = 14))
+alpha_div_C1
+```
+
+save Chao1 plot
+```{r}
+ggsave("alpha_diversity_chao1.png", plot = alpha_div_C1)
+```
+
+alpha diversity Simpson
+```{r}
+alpha_div_Simp <- alpha_index_df_rarefied_all %>%
+  pivot_longer(cols = c(Simpson), names_to = "index", values_to = "value") %>%
+  mutate(index_sorted = factor(index, levels = c("Simpson"), labels = c("OTUs"))) %>%
+  ggplot(aes(x = Year, y = value, fill = Site)) +  ylim(0,1)+
+  geom_boxplot(outlier.shape = NA) + 
+  theme_classic() + theme(panel.grid.major = element_blank(),
+                     panel.grid.minor = element_blank(),
+                     axis.title = element_text(size=16),
+                     axis.text.y = element_text(size = 14)) +
+  labs(title = "Simpson",
+       y = "Diversity index") +
+ # geom_pwc(
+#      aes(group = Year),
+#      method = "dunn_test",
+#      label = "p.signif",
+#      p.adjust.method = "bonferroni",
+#      hide.ns = TRUE,
+#      tip.length = 0.03
+#    ) +
+   scale_fill_viridis_d(option = "C") +
+  theme(legend.position = "none", strip.text = element_text(colour = "black"), strip.background = element_rect(fill = "white", colour = "black"),
+        panel.grid.major = element_blank(), panel.grid.minor = element_blank(), text = element_text(size = 14))
+alpha_div_Simp
+```
+
+save Simpson plot
+```{r}
+ggsave("alpha_diversity_Simp.png", plot = alpha_div_Simp)
+```
+
+## PCoA
+Conduct PCoA both for Year and Site
+```{r}
+png("PCoA_bac_years.png", width = 1000, height = 800, res = 150)
+
+bray_rarefied.ord <- ordinate(rarefied, "PCoA", "bray")
+ordination_scores <- as.data.frame(bray_rarefied.ord$vectors)
+ordination_scores$Site <- sample_data(rarefied)$Site
+colnames(ordination_scores)[1:2] <- c("PC1", "PC2")
+centroids <- ordination_scores %>%
+  group_by(Year) %>%
+  summarise(PC1 = mean(PC1), PC2 = mean(PC2))
+p_bray <- plot_ordination(rarefied, bray_rarefied.ord, type = "samples", color = "Year") + 
+  theme_classic() 
+p_bray <- p_bray + 
+  geom_point(data = centroids, aes(x = PC1, y = PC2, color = Site), shape = 4, size = 4, stroke = 2) +
+ scale_color_manual(values = c("2020" = "#440154", "2021" = "#f98e09", "2022" = "#21918c", "2023" = "#b73779"),
+                     labels = c("2020", "2021", "2022", "2023")) +
+
+p_bray
+
+dev.off()
+```
+
+```{r}
+png("PCoA_bac_sites.png", width = 1000, height = 800, res = 150)
+
+highlight_site <- "Mambo_Beach" 
+
+bray_rarefied.ord <- ordinate(rarefied, "PCoA", "bray")
+ordination_scores <- as.data.frame(bray_rarefied.ord$vectors)
+ordination_scores$Site <- sample_data(rarefied)$Site
+colnames(ordination_scores)[1:2] <- c("PC1", "PC2")
+centroids <- ordination_scores %>%
+  group_by(Site) %>%
+  summarise(PC1 = mean(PC1), PC2 = mean(PC2))
+p_bray <- plot_ordination(rarefied, bray_rarefied.ord, type = "samples", color = "Site") + 
+  theme_classic() 
+p_bray <- p_bray + 
+  geom_point(data = centroids, aes(x = PC1, y = PC2, color = Site), shape = 4, size = 4, stroke = 2) +
+   stat_ellipse(data = subset(ordination_scores, Site != "Mambo_Beach"), 
+               aes(x = PC1, y = PC2, group = Site), 
+               alpha = 0.5) +
+  stat_ellipse(data = subset(ordination_scores, Site == "Mambo_Beach"), 
+               aes(x = PC1, y = PC2, group = Site), 
+                size = 1)
+
+p_bray
+
+dev.off()
+```
+
+## PERMANOVA
+```{r}
+rarefied_transformed <- rarefied %>%
+  transform_sample_counts(function(x) 100* {x/sum(x)})
+
+phyloseq1_bray <- phyloseq::distance(rarefied_transformed, method = "bray")
+bray_dist <- as.matrix(dist(phyloseq1_bray))
+sampledf <- data.frame(sample_data(rarefied_transformed))
+adonis_bray_year <- adonis2(phyloseq1_bray ~ Year, data = sampledf)
+adonis_bray_year
+adonis_bray_site <- adonis2(phyloseq1_bray ~ Site, data = sampledf)
+adonis_bray_site
+```
+
+check assumption 
+```{r}
+beta_species <- betadisper(phyloseq1_bray, sampledf$Site)
+permutest(beta_species)
+```
+
+```{r}
+beta_samplingtime <- betadisper(phyloseq1_bray, sampledf$Year)
+permutest(beta_samplingtime)
+```
+
+## Taxonomy 
+Set taxonomic rank
+```{r}
+genusabundance <- rarefied %>%
+  tax_glom(taxrank = "Genus") %>%                    # Set to smallest taxonomic level you are interested in
+  transform_sample_counts(function(x) {x/sum(x)} ) %>%   # Transform to rel. abundance
+  psmelt()                                               # Melt to long format
+
+```
+
+```{r}
+genusabundance <- genusabundance %>%
+  mutate(Site = gsub("_", " ", Site)) %>%
+  mutate(newLabel = paste(Status, Site, sep = "-"))
+head(genusabundance)
+```
+
+filter genus abundance dataframe to show only desired taxonmic levels
+```{r}
+##entire dataset
+all <- genusabundance %>%
+  select(Phylum, Class, Family, Genus, Sample, Abundance,Year, Site, Label, newLabel) %>%
+  filter(Abundance != 0) %>%
+  mutate(
+    Phylum = as.character(Phylum),
+    Class = as.character(Class),
+    Family = as.character(Family),
+    Genus = as.character(Genus))
+head(all)
+
+```
+
+calculate rel. and total abundances and group in >5% if applicabale 
+```{r}
+
+## Group data and calculate total and relative abundances
+relative_abundance_family <- all %>%
+  group_by(Family, Year, Site, Label, newLabel) %>%
+  summarise(TotalAbundance = sum(Abundance), .groups = "drop") %>%
+  group_by(Label) %>%
+  mutate(RelativeAbundance = TotalAbundance / sum(TotalAbundance))
+
+#all families that are present in only less than 5% samples are grouped in one group "< 5%"
+relative_abundance_family_morethan5 <- relative_abundance_family %>%
+  mutate(Family = ifelse(RelativeAbundance < 0.05, "< 5 %", Family))
+
+relative_abundance_family_morethan5 <- relative_abundance_family_morethan5 %>%
+  group_by(Family, Year, Site, Label, newLabel) %>%
+  summarise(RelativeAbundance = sum(RelativeAbundance), .groups = "drop")
+```
+
+```{r}
+library(colorspace)
+desired_order <- c(
+    "CONTROL-Directors Bay", "CONTROL-Playa Jeremy", "URBAN-Holiday Beach",
+    "URBAN-Coral Estate", "URBAN-Cas Abou", "TOURIST-Mambo Beach",
+    "TOURIST-Porto Marie", "TOURIST-Grote Knip"
+  )
+
+# Create a mapping between newLabel and Label
+label_map <- relative_abundance_family_morethan5 %>%
+  select(Label, newLabel) %>%
+  distinct() %>%
+  filter(newLabel %in% desired_order)
+
+# Create a factor with levels ordered by desired newLabel
+label_ordered <- label_map %>%
+  arrange(factor(newLabel, levels = desired_order)) %>%
+  pull(Label)
+
+# Apply the new ordering to Label
+relative_abundance_family_morethan5$Label <- factor(
+  relative_abundance_family_morethan5$Label,
+  levels = label_ordered
+)
+```
+
+
+stacked bar plot of abundance per sample per years
+```{r}
+#create a custom color palette 
+colorBlindness::displayColors(SteppedSequential5Steps) 
+color_palette <- SteppedSequential5Steps 
+# Name the palette using unique Family levels
+names(color_palette) <- unique(relative_abundance_family_morethan5$Family)
+
+# Override the color
+color_palette["< 5 %"] <- "grey"
+color_palette["SAR86_clade_fa"] <- "#51A3CC"
+
+
+#create plot 
+relative_abundance_plot <- ggplot(relative_abundance_family_morethan5, aes(x = Label, y = RelativeAbundance, fill = Family)) +
+  geom_bar(stat = "identity") +
+  theme_classic() +
+  labs(x = "Sample site",
+       fill = "Family") +
+  theme(axis.text.x = element_text(angle = 60, hjust = 1)) +
+  facet_wrap(~ Year, scales = "free_y", nrow = 4) + 
+  scale_fill_manual(values = color_palette)  +
+  scale_x_discrete(breaks = relative_abundance_family_morethan5$Label,
+                     labels = relative_abundance_family_morethan5$newLabel) +
+  coord_flip() +
+  theme(legend.position = "right")
+  
+
+print(relative_abundance_plot)
+
+ggsave("bac_stackedbarplot_horizontal.pdf", plot = relative_abundance_plot,
+       width = 20,
+       height = 10,
+       units = "in")
+```
+
+#ANCOMBC
+prepare subsets of years that for comparison and create phyloseqs
+```{r}
+ year_pairs <- list(c("2020", "2021"),
+                   c("2021", "2022"),
+                   c("2022", "2023"))
+#Years 2020 and 2021
+phy_20_21 <- subset_samples(phyloseq_tourist_clean1, Year %in% c("2020", "2021"))
+phy_20_21 <- prune_taxa(taxa_sums(phy_20_21) > 0, phy_20_21)
+#Years 2021 and 2022
+phy_21_22 <- subset_samples(phyloseq_tourist_clean1, Year %in% c("2021", "2022"))
+phy_21_22 <- prune_taxa(taxa_sums(phy_21_22) > 0, phy_21_22)
+#Years 2022 and 2023
+phy_22_23 <- subset_samples(phyloseq_tourist_clean1, Year %in% c("2022", "2023"))
+phy_22_23 <- prune_taxa(taxa_sums(phy_22_23) > 0, phy_22_23)
+```
+
+ run ANCOMBC on phyloseqs
+```{r}
+set.seed(124)
+
+## 2020 2021
+ancom_20_21 <- ancombc2(phy_20_21, fix_formula = "Year", p_adj_method = "BH", lib_cut = 1000, group = "Year", struc_zero = FALSE, neg_lb = FALSE, alpha = 0.05, global = FALSE 
+) 
+
+res_20_21 <- ancom_20_21$res
+sum(res_20_21$diff_Year.L == TRUE) #83 significant OTUs
+nrow(res_20_21) # 215 OTUs analyzed
+
+save(ancom_20_21, file = "ancombc_20_21_c.RData")
+
+##2021 2022
+ancom_21_22 <- ancombc2(phy_21_22, fix_formula = "Year", p_adj_method = "BH", lib_cut = 1000, group = "Year", struc_zero = FALSE, neg_lb = FALSE, alpha = 0.05, global = FALSE 
+) 
+
+res_21_22 <- ancom_21_22$res
+sum(res_21_22$diff_Year.L == TRUE) #127 significant OTUs
+nrow(res_21_22) #259 OTUs analyzed
+
+save(ancom_20_21, file = "ancombc_21_22_c.RData")
+
+##2022 2023
+ancom_22_23 <- ancombc2(phy_22_23, fix_formula = "Year", p_adj_method = "BH", lib_cut = 1000, group = "Year", struc_zero = FALSE, neg_lb = FALSE, alpha = 0.05, global = FALSE 
+) 
+
+res_22_23 <- ancom_22_23$res
+sum(res_22_23$diff_Year.L == TRUE) #155 significant OTUs
+nrow(res_22_23)  #279 OTUs analyzed
+save(ancom_22_23, file = "ancombc_22_23_c.RData")
+```
+
+Prepare data
+```{r}
+test_tax_20_21 <- tax_table(phy_20_21)
+dimnames(test_tax_20_21)
+tax_table_gen_20_21 <- as_tibble(test_tax_20_21@.Data) %>%
+  mutate(taxon = dimnames(test_tax_20_21)[[1]]) %>%  
+  relocate(taxon, .before = 1)
+
+test_tax_21_22 <- tax_table(phy_21_22)
+dimnames(test_tax_21_22)
+tax_table_gen_21_22 <- as_tibble(test_tax_21_22@.Data) %>%
+  mutate(taxon = dimnames(test_tax_21_22)[[1]]) %>%  
+  relocate(taxon, .before = 1)
+
+test_tax_22_23 <- tax_table(phy_22_23)
+dimnames(test_tax_22_23)
+tax_table_gen_22_23 <- as_tibble(test_tax_22_23@.Data) %>%
+  mutate(taxon = dimnames(test_tax_22_23)[[1]]) %>%  
+  relocate(taxon, .before = 1)
+
+```
+
+Ancombc results table alpha 0.05
+```{r}
+ancom_gg_data_20_21 <- res_20_21 %>%
+  left_join(tax_table_gen_20_21[,c("taxon", "Order", "Family", "Genus")]) %>%
+  filter(diff_Year.L == TRUE) %>%
+  mutate(wg = ifelse(W_Year.L>0, "pos", "neg")) %>%
+  mutate(new_lab = paste(taxon, Genus))  
+
+ancom_gg_data_df_20_21 <- data.frame(ancom_gg_data_20_21, nrow=nrow(ancom_gg_data_20_21))
+
+ancom_gg_data_21_22 <- res_21_22 %>%
+  left_join(tax_table_gen_21_22[,c("taxon", "Order", "Family", "Genus")]) %>%
+  filter(diff_Year.L == TRUE) %>%
+  mutate(wg = ifelse(W_Year.L>0, "pos", "neg")) %>%
+  mutate(new_lab = paste(taxon, Genus))  
+
+ancom_gg_data_df_21_22 <- data.frame(ancom_gg_data_21_22, nrow=nrow(ancom_gg_data_21_22))
+
+ancom_gg_data_22_23 <- res_22_23 %>%
+  left_join(tax_table_gen_22_23[,c("taxon", "Order", "Family", "Genus")]) %>%
+  filter(diff_Year.L == TRUE) %>%
+  mutate(wg = ifelse(W_Year.L>0, "pos", "neg")) %>%
+  mutate(new_lab = paste(taxon, Genus))  
+
+ancom_gg_data_df_22_23 <- data.frame(ancom_gg_data_22_23, nrow=nrow(ancom_gg_data_22_23))
+```
+
+Number of increased and decreased OTUs
+```{r}
+ancom_gg_data_20_21 %>%
+  count(wg)
+
+ancom_gg_data_21_22 %>%
+  count(wg)
+
+ancom_gg_data_22_23 %>%
+  count(wg)
+
+```
+
+Volcano plots
+```{r}
+process_ancom_pair <- function(ancom_result, phyloseq_obj, comparison_label) {
+  # Extract results
+  res <- ancom_result$res
+  
+  # Get taxonomy
+  tax_table_df <- as.data.frame(tax_table(phyloseq_obj)) %>%
+    rownames_to_column("taxon")
+  
+  # Transform to relative abundance
+  rel_abund_matrix <- vegan::decostand(otu_table(phyloseq_obj), method = "total", MARGIN = 2)
+  rel_abund_df <- data.frame(relmean = rowMeans(rel_abund_matrix)) %>%
+    rownames_to_column("taxon")
+  
+  # Merge all
+  volcano_df <- res %>%
+    select(taxon, starts_with("W_"), starts_with("lfc_"), starts_with("q_"), starts_with("diff_")) %>%
+    left_join(tax_table_df, by = "taxon") %>%
+    left_join(rel_abund_df, by = "taxon") %>%
+    mutate(
+      group = ifelse(lfc_Year.L > 0, "Enriched", "Decreased"),
+      group2 = ifelse(diff_Year.L == FALSE, "Not significant", group),
+      group2 = factor(group2, levels = c("Decreased", "Enriched", "Not significant")),
+      sizept = log2(relmean) + 15,
+      comparison = comparison_label
+    )
+  
+  return(volcano_df)
+}
+
+```
+
+
+```{r}
+volcano_20_21 <- process_ancom_pair(ancom_20_21, phy_20_21, "2020 vs 2021")
+volcano_21_22 <- process_ancom_pair(ancom_21_22, phy_21_22, "2021 vs 2022")
+volcano_22_23 <- process_ancom_pair(ancom_22_23, phy_22_23, "2022 vs 2023")
+
+# Combine for plotting
+all_volcano_data <- bind_rows(volcano_20_21, volcano_21_22, volcano_22_23)
+
+```
+
+```{r}
+ggplot(all_volcano_data, aes(x = lfc_Year.L, y = -log10(q_Year.L), color = group2)) +
+  geom_point(alpha = 0.6) +
+  facet_wrap(~ comparison, scales = "free") +
+  geom_hline(yintercept = -log10(0.05), linetype = "dashed") +
+  geom_vline(xintercept = c(log2(0.9), log2(1.1)), linetype = "dashed") +
+  scale_color_manual(values = c("brown", "darkcyan", "gray"), name = "OTUs") +
+  labs(x = "Log Fold Change", y = "-log10(q-value)", title = "Volcano Plot for Year Comparisons") +
+  theme_classic()
+
+```
+
+Create new color palette that is in accordance with the relative abundance plot
+```{r}
+
+all_families <- unique(top_otus_by_comparison$Family)
+
+less5_label <- "< 5 %"
+
+grey_families <- names(color_palette)[color_palette == "grey" & names(color_palette) != less5_label]
+
+
+n_soft <- length(grey_families)
+
+if (n_soft > 0) {
+  soft_colors <- brewer.pal(min(8, n_soft), "Pastel1")
+  if (n_soft > length(soft_colors)) {
+    soft_colors <- colorRampPalette(soft_colors)(n_soft)
+  }
+  
+  soft_family_colors <- setNames(soft_colors, grey_families)
+} else {
+  soft_family_colors <- c()
+}
+
+final_palette <- color_palette
+
+final_palette[grey_families] <- soft_family_colors
+
+final_palette[less5_label] <- "grey"
+
+```
+
+Create top 20 table across comparisons and create plots 
+```{r}
+top_otus_by_comparison <- all_volcano_data %>%
+  filter(diff_Year.L == TRUE, Genus != "Unclassified") %>%
+  group_by(comparison) %>%
+  slice_max(order_by = abs(W_Year.L), n = 20) %>%
+  ungroup() %>%
+  mutate(taxon_label = paste(taxon , Genus, sep = " "))
+         
+top_otus_by_comparison <- top_otus_by_comparison %>%
+  mutate(Family = factor(Family, levels = names(final_palette)),
+         # create taxon_label combining taxon, Family, Genus separated by spaces
+         taxon_label = paste(taxon, Genus, sep = " "))
+
+plot_top_otus <- function(data, comparison_name) {
+  plot_data <- data %>%
+    filter(comparison == comparison_name) %>%
+    mutate(taxon_label = factor(taxon_label, levels = taxon_label[order(W_Year.L)]))
+  
+  ggplot(plot_data, aes(x = taxon_label, y = W_Year.L, fill = Family)) +
+    geom_col(color = "black", linewidth = 0.4, alpha = 0.95) +
+    coord_flip() +
+      scale_fill_manual(values = final_palette) +
+    labs(
+      title = paste("Top 20 Significant OTUs:", comparison_name),
+      x = "OTU (Family + Genus)",
+      y = "W Statistic"
+    ) +
+    theme_classic() +
+    theme(
+      plot.title = element_text(hjust = 0.5),
+     axis.text.y = element_text(colour = "black"),
+      legend.position = "bottom"
+    )
+}
+```
+
+
+Save individual plots
+```{r}
+p1 <- plot_top_otus(top_otus_by_comparison, "2020 vs 2021")
+p2 <- plot_top_otus(top_otus_by_comparison, "2021 vs 2022")
+p3 <- plot_top_otus(top_otus_by_comparison, "2022 vs 2023")
+
+ggsave("top20_otus_2020_vs_2021.pdf", plot = p1, width = 10, height = 6)
+ggsave("top20_otus_2021_vs_2022.pdf", plot = p2, width = 10, height = 6)
+ggsave("top20_otus_2022_vs_2023.pdf", plot = p3, width = 10, height = 6)
+```

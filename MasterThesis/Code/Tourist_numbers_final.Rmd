@@ -1,0 +1,48 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+```{r}
+library(tidyverse)#includes ggplot2
+library(viridis) #colorblind friendly palette
+library(scales) #to write population numbers in their thousands with a comma 
+```
+Create df containing years and numbers of tourists (stayovers) and local population of Curaçao 
+```{r}
+tourist_numbers <- data.frame(Year = c("2018", "2019","2020", "2021", "2022", "2023"),
+Number_of_stayovers = c(431701, 463683, 174876, 265006, 489559, 582409),
+Number_local_population = c(160012, 158659, 155223, 153671, 151066, 148925))
+
+#display table
+print(tourist_numbers)
+```
+
+```{r}
+# Create the plot
+tourist_plot <- ggplot(tourist_numbers, aes(x = Year)) + 
+  # First line for stayovers
+  geom_line(aes(y = Number_of_stayovers, color = "stayovers", group = 1), linewidth = 0.5) +  
+  geom_point(aes(y = Number_of_stayovers, color = "stayovers"), size = 4) +
+  geom_text(aes(y = Number_of_stayovers, label = label_comma() (Number_of_stayovers)), 
+            color = "black", size = 3, vjust = -1, hjust = 0.5) +
+  
+  #second line for local_population 
+  geom_line(aes(y = Number_local_population, color = "local", group = 1), linewidth = 0.5) + 
+  geom_point(aes(y = Number_local_population, color = "local"), size = 4) + 
+  geom_text(aes(y = Number_local_population, label = label_comma() (Number_local_population)), 
+            color = "black", size = 3, vjust = +2, hjust = 0.5) +
+  
+  # Color scale for both 
+  scale_color_manual(values = c("local" = "#b73779", "stayovers" = "#0d0887")) +
+  theme_classic() +
+  labs(x = "Year", 
+       y = "Number of people") +
+  coord_cartesian(ylim = c(100000, 600000)) +  # Set y-axis limit using coord_cartesian()
+  scale_y_continuous(labels = label_comma())  # Format y-axis labels to avoid scientific notation
+
+# Display the plot
+print(tourist_plot)
+
+ggsave("Tourist_numbers_new.png", tourist_plot)
+```
+

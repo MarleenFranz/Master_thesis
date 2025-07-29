@@ -1,0 +1,312 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+##data preparation 
+load required libraries
+```{r}
+library(tidyverse)
+library(factoextra) #for PCA
+library(vegan) #multiple functions e.g to compute distance matrix
+#library(BiocManager)
+library(FSA) #for statistical tests
+library(viridis) #colorblind palette
+library(RColorBrewer) #high contrasted colors
+library(ggpubr) #add pairwise comparison to ggplots
+#library(patchwork) #displaying multiple plots together
+library(pheatmap) #heatmap 
+library(pairwiseAdonis) #pairwise comparison 
+```
+name and load dataframe
+```{r}
+xeno <-read.csv() #add your path here
+xeno <- xeno[-149,] #remove row that is missing metadata
+```
+
+Subsample to get two individual dataframes for metadata and numerical data (grouped_cleaned_data)
+```{r}
+metadata <- xeno[, c(1:12),]
+grouped_cleaned_data <- xeno[, c(13:28)]  
+
+transform(metadata, Year = as.factor(Year))
+```
+
+
+## PCoA 
+following Shah et al.
+create distance matrix
+```{r}
+grouped_distm <- vegdist(grouped_cleaned_data, method = "bray")
+```
+
+run PCoA
+```{r}
+PcoA<- cmdscale(grouped_distm,
+                 k = 10, # k=10 gets the first 10 Principal coordinates (PCo)
+                 eig = T,
+                add = T)
+
+PcoA_points <- as.data.frame(PcoA$points) #getting the PCOs into dataframe
+variance <- round(PcoA$eig*100/sum(PcoA$eig),1) # getting the variance explained by each PCo
+names(PcoA_points)[1:10] <- paste0('PCoA', seq(1,10))  #naming the 10 PCos
+
+```
+
+remove the underscore from the site names
+```{r}
+metadata$Site <- gsub("_", " ", metadata$Site)
+```
+
+choose interesed attribute - run twice, once for 'Year' and once for 'Site'
+```{r}
+interested_attribute_pcoa  = 'Year' 
+```
+
+Rearrange site order for better overview in plots
+```{r}
+# Define the desired site order 
+desired_site_order <- c(
+  "Directors Bay", "Jan Kok", "Playa Jeremy", "Holiday Beach", 
+  "Coral Estate", "Cas Abou", "Mambo Beach", "Porto Marie", "Grote Knip"
+)
+
+# Now factor Site with this order
+metadata <- metadata %>%
+  filter(Site %in% desired_site_order) %>%  # Filter to only desired Sites
+  mutate(Site = factor(Site, levels = desired_site_order))
+
+```
+
+Create PCoA plot
+```{r}
+# Make sure the group used for plotting is a factor 
+PcoA_points$Group <- factor(metadata[[interested_attribute_pcoa]][match(rownames(PcoA_points), rownames(metadata))])
+
+
+# Calculate centroids
+centroids <- PcoA_points %>%
+  group_by(Group) %>%
+  summarise(PCoA1 = mean(PCoA1), PCoA2 = mean(PCoA2), .groups = "drop")
+
+# PCoA plot 
+PCoA_plot <- ggplot(PcoA_points, aes(x = PCoA1, y = PCoA2, color = Group)) +
+  geom_point(size = 2) +  # sample points
+  geom_point(data = centroids, aes(x = PCoA1, y = PCoA2, color = Group),
+             shape = 4, size = 4, stroke = 2) +  # centroids
+ 
+  scale_color_manual(values = c("2020" = "#440154", "2021" = "#f98e09", "2022" = "#21918c", "2023" = "#b73779"),
+                     labels = c("2020", "2021", "2022", "2023")) +
+   stat_ellipse() +
+ # scale_color_viridis_d(option = "C") +
+  xlab(paste0("Axis 1 (", round(variance[1], 1), "%)")) +
+  ylab(paste0("Axis 2 (", round(variance[2], 1), "%)")) +
+  labs(title = "PCoA by Year", color = "Year") +
+  theme_classic() +
+  coord_fixed() +
+  theme(
+    axis.title = element_text(size = 16),
+    axis.text = element_text(size = 14),
+    plot.title = element_text(size = 18, hjust = 0.5),
+    legend.title = element_text(size = 16),
+    legend.text = element_text(size = 14)
+  )
+
+print(PCoA_plot)
+ggsave("_XenoPCoA_Years.pdf", plot = PCoA_plot)
+
+```
+
+
+##PERMANOVA 
+(Shah et al) 
+
+Check on homogeneity by creating dispersion model 
+```{r}
+interested_attribute_permanova = 'Site'
+group <- metadata[, interested_attribute_permanova]
+```
+
+```{r}
+grouped_dispersion_model <- betadisper(grouped_distm, group)
+plot(grouped_dispersion_model)
+
+grouped_dispersion_model
+```
+
+See if dispersions are significantly different by performing anova 
+```{r}
+grouped_disp <- anova(grouped_dispersion_model)
+grouped_disp["significant"]  <- ifelse(grouped_disp$`Pr(>F)`<0.05, "Significant", "Non-significant") 
+grouped_dis
+```
+
+significant p-values indicate that the group dispersions are different and the assumption for PERMANOVA is violated (Permanova assumes group dispersions are qual across groups)
+
+
+Conduct PERMANOVA test (adonis2)
+```{r}
+adonis2(formula = grouped_distm ~ group)
+
+```
+
+pairwise Adonis for cobined Year and Site values
+```{r}
+pairwise_results <- pairwise.adonis(grouped_cleaned_data, factors = interaction(metadata$Site, metadata$Year), sim.method = "bray") 
+```
+
+##Heatmap
+remove the subcategory 'All' 
+```{r}
+grouped_woAll <- grouped_cleaned_data[, !colnames(grouped_cleaned_data) %in% ("ALL")] # remove column "ALL"
+rownames(grouped_woAll)<- metadata$SampleID #add SampleID as rownames to have it shown in the heatmap 
+
+```
+
+create matrix and create heatmap with custom colors
+```{r}
+# Ensure row names in metadata match the row names in the matrix
+rownames(metadata) <- metadata$SampleID  
+rownames(grouped_woAll) <- metadata$SampleID 
+
+# Convert 'Year' to a factor to ensure correct ordering
+metadata$Year <- factor(metadata$Year, levels = c(2020, 2021, 2022, 2023))
+
+
+# Sort metadata and matrix by Year and Site
+sorted_metadata <- metadata[order(metadata$Year, metadata$Site), ]
+sorted_matrix <- grouped_woAll[sorted_metadata$SampleID, ]
+
+# Find indices where 'Year' changes to insert row gaps
+year_groups <- as.numeric(factor(sorted_metadata$Year))  # Convert to numeric groups
+gaps_row <- which(diff(year_groups) != 0)  # Find row indices where Year changes
+
+# Create custom y-axis labels: only show first instance per group
+labels_row <- sorted_metadata$Site
+
+# Create annotation color list
+annotation_colors <- list(
+  Year = c("2020" = "#440154", 
+           "2021" = "#f98e09", 
+           "2022" = "#21918c", 
+           "2023" = "#b73779")
+)
+
+# Define heatmap color palette
+pheatmap_color <- colorRampPalette(c("blue", "white", "red"))(50)
+
+# Create the heatmap
+pdf("heatmap_grouped.pdf", width = 16.7, height = 20)
+pheatmap(sorted_matrix,
+         scale = "column",
+         cluster_cols = FALSE,  
+         cluster_rows = FALSE,  
+         annotation_row = sorted_metadata["Year"],
+         annotation_colors = annotation_colors,
+         gaps_row = gaps_row,
+         color = pheatmap_color,
+         fontsize_row = 6,
+         cellheight = 4,
+         labels_row = labels_row
+)
+dev.off()
+```
+
+# Univariate analysis
+Comparing one class/category. Accepting or rejecting the O Hypothesis, which states that there is no relationship between different classes/categories. 
+
+First check if data is normally distributed or not to establish which tests are further conducted. Using the wilk shapiro test
+grouped data
+```{r}
+grouped_shapiro <- matrix_grouped %>% colnames() %>% as.data.frame #getting all the column names into a dataframe called "op_shapiro"
+colnames(grouped_shapiro)[1] <- "Metabolites" #naming the column as "Metabolites"
+
+grouped_shapiro$p <- sapply(1:ncol(matrix_grouped), function(n){shapiro.test(matrix_grouped[,n])$p}) #performing shapiro test on each feature and getting the p-value as a column 'p'
+grouped_shapiro$p_adj <- p.adjust(grouped_shapiro$p, method="fdr") #adding a column "p_adj" with corrected p-values. The method used is FDR (also known as Benjamini-Hochberg correction) 
+grouped_shapiro$distribution <- ifelse(grouped_shapiro$p_adj<0.05, "Non-normal", "Normal")
+
+grouped_shapiro %>% arrange(p) %>% head(n=5) #getting the top-5 p-value metabolites
+
+paste("No.of features with normal distribution:", sum(grouped_shapiro$distribution=="Normal"))
+paste("No.of features with non-normal distribution:", sum(grouped_shapiro$distribution=="Non-normal"))
+```
+
+## Kruskal-wallis test 
+data is not normally distributed, non-parametric tests are conducted.
+The Kruskal-wallis test checks if the median of compared groups are significantly different from each other.
+If the values are significant the 0 hypothesis gets rejected.
+Run twice, once for attribute 'Year', once for 'Site'
+```{r}
+#select the attribute that you want to compare the groups against (Year/Site)
+print(data.frame(INDEX=1:ncol(metadata), ATTRIBUTES=colnames(metadata)))
+```
+
+```{r}
+interested_attribute_kw <- as.numeric(readline('Enter the index number of the attribute for performing Kruskal-Wallis test: '))
+```
+
+```{r}
+kw_grouped <- data.frame()
+for (i in 1:ncol(matrix_grouped)){
+    kw_grouped_model <- broom::tidy(kruskal.test(matrix_grouped[,i] ~ metadata[,interested_attribute_kw])) #perform Kruskall Wallis for each feature against sample area
+    kw_grouped <- bind_rows(kw_grouped, kw_grouped_model) #combine outputs from all features
+}
+
+rownames(kw_grouped) <- colnames(matrix_grouped) # naming each row with feature name
+
+kw_grouped <- arrange(kw_grouped, p.value) # arranging ttest_output by p values
+kw_grouped["p_BH"] <- p.adjust(kw_grouped$p.value, method="BH")
+kw_grouped["significant"] <- ifelse(kw_grouped$p_BH < 0.05, "Significant", "Nonsignificant")
+
+print(kw_grouped)
+
+grouped_kw_sig_names <- kw_grouped%>% filter(significant=="Significant") %>% rownames(.) #getting the rownames of significant features from KW output
+
+write_csv(kw_grouped, "kruskal_test_xeno_years.csv")
+```
+
+
+Visualize which categories are significant/non-significant
+```{r}
+options(repr.plot.width=10, repr.plot.height=10, res=128) # we are redefining the plot size
+
+grouped_kruskal <- ggplot(kw_grouped, aes(x = log(statistic,base=10), y = -log(p_BH, base=10), color = significant)) +
+              geom_point() +
+              theme_classic() +
+              scale_color_manual(values= c("#482173","#29af7f")) +
+              ylab(expression(-log[10](p-value))) +
+              xlab(expression(log[10](K))) +
+              ggtitle("Years") +
+              ggrepel::geom_text_repel(data=kw_grouped,nudge_x = 0.1, aes(label=rownames(kw_grouped)),size=3, show.legend = FALSE, max.overlaps = 50) +
+              theme(legend.title = element_blank(),
+                    axis.title = element_text(size = 18),
+                    text = element_text(size = 18),
+                    panel.background = element_blank(), #making the ggplot background white
+                    panel.border = element_rect(colour = "black", fill=NA, linewidth=1))
+
+grouped_kruskal
+```
+
+## Dunn's post-hoc test
+perform post-hoc test on the significant features which the Kruskal walls test revealed. Get the p-values that show which groups exactly are significantly different 
+```{r}
+dunn_grouped <- list()
+
+#perform dunn-test on Kruskal test's significant features against sample area
+for (i in grouped_kw_sig_names){
+    dunn_grouped[[i]] <- dunnTest(matrix_grouped[,i] ~ as.factor(metadata[,interested_attribute_kw]), method="bh")$res
+}
+# Convert the list into a single data frame
+dunn_grouped_df <- bind_rows(dunn_grouped, .id = "Feature")  
+
+# Arrange by adjusted p-value
+dunn_grouped_df <- arrange(dunn_grouped_df, P.adj)
+
+# Add significance column
+dunn_grouped_df <- dunn_grouped_df %>%
+    mutate(significant = ifelse(P.adj < 0.05, "Significant", "Nonsignificant"))
+
+# Print results
+print(dunn_grouped_df)
+
+write_csv(dunn_grouped_df, "dunn_test_xeno_years.csv")
+```
